@@ -1,6 +1,4 @@
-package com.sanvalero.aa2.model;
-
-import java.time.LocalDateTime;
+package com.svalero.aa2.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +13,7 @@ public class ArtworkType {
     String api_link;
     String title;
     int aat_id;
-    LocalDateTime source_updated_at;
-    LocalDateTime updated_at;
-    LocalDateTime timestamp;
+    String source_updated_at;
+    String updated_at;
+    String timestamp;
 }

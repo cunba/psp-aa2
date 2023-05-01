@@ -1,10 +1,13 @@
-package com.sanvalero.aa2.service;
+package com.svalero.aa2.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sanvalero.aa2.model.Artist;
-import com.sanvalero.aa2.model.Artwork;
-import com.sanvalero.aa2.model.Exhibition;
+import com.svalero.aa2.model.Artist;
+import com.svalero.aa2.model.Artwork;
+import com.svalero.aa2.model.ArtworkType;
+import com.svalero.aa2.model.Exhibition;
+import com.svalero.aa2.model.Response;
+import com.svalero.aa2.model.ResponsePaginated;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
@@ -14,7 +17,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArtService {
-    private static final String BASE_URL = "https://api.artic.edu/api/v1";
+    private static final String BASE_URL = "https://api.artic.edu";
     private ArtAPI api;
 
     public ArtService() {
@@ -36,27 +39,35 @@ public class ArtService {
         this.api = retrofit.create(ArtAPI.class);
     }
 
-    public Observable<Artwork> getAllArtworks() {
-        return this.api.getAllArtworks().flatMapIterable(artworks -> artworks);
+    public Observable<ResponsePaginated<Artwork>> getAllArtworks() {
+        return this.api.getAllArtworks();
     }
 
-    public Observable<Artwork> getArtworkById(int id) {
+    public Observable<Response<Artwork>> getArtworkById(int id) {
         return this.api.getArtworkById(id);
     }
 
-    public Observable<Artist> getAllArtists() {
-        return this.api.getAllArtists().flatMapIterable(artists -> artists);
+    public Observable<ResponsePaginated<Artist>> getAllArtists() {
+        return this.api.getAllArtists();
     }
 
-    public Observable<Artist> getArtistsById(int id) {
+    public Observable<Response<Artist>> getArtistById(int id) {
         return this.api.getArtistById(id);
     }
 
-    public Observable<Exhibition> getAllExhibitions() {
-        return this.api.getAllExhibitions().flatMapIterable(exhibitions -> exhibitions);
+    public Observable<ResponsePaginated<Exhibition>> getAllExhibitions() {
+        return this.api.getAllExhibitions();
     }
 
-    public Observable<Exhibition> getExhibitionById(int id) {
+    public Observable<Response<Exhibition>> getExhibitionById(int id) {
         return this.api.getExhibitionById(id);
+    }
+
+    public Observable<ResponsePaginated<ArtworkType>> getAllArtworkTypes() {
+        return this.api.getAllArtworkTypes();
+    }
+
+    public Observable<Response<ArtworkType>> getArtworkTypeById(int id) {
+        return this.api.getArtworkTypeById(id);
     }
 }

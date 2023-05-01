@@ -1,4 +1,4 @@
-package com.sanvalero.aa2.model;
+package com.svalero.aa2.model;
 
 public class ArtworkColor {
     int h;

@@ -1,16 +1,17 @@
-package com.sanvalero.aa2.model;
+package com.svalero.aa2.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Artwork {
     int id;
     String api_model;
@@ -68,7 +69,7 @@ public class Artwork {
     List<Integer> alt_artist_ids;
     List<Integer> artist_ids;
     List<String> artist_titles;
-    List<Integer> category_ids;
+    List<String> category_ids;
     List<String> category_titles;
     List<String> term_titles;
     String style_id;
@@ -100,12 +101,10 @@ public class Artwork {
     List<UUID> sound_ids;
     List<UUID> video_ids;
     List<UUID> text_ids;
-    List<Integer> section_ids;
+    List<Long> section_ids;
     List<String> section_titles;
     List<Integer> site_ids;
-    List<Object> suggest_autocomplete_boosted;
-    List<Object> suggest_autocomplete_all;
-    LocalDateTime source_updated_at;
-    LocalDateTime updated_at;
-    LocalDateTime timestamp; 
+    String source_updated_at;
+    String updated_at;
+    String timestamp;
 }

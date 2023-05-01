@@ -1,6 +1,7 @@
-package com.sanvalero.aa2;
+package com.svalero.aa2;
 
-import com.sanvalero.aa2.util.R;
+import com.svalero.aa2.controller.AppController;
+import com.svalero.aa2.util.R;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(R.getUI("main-app.fxml"));
-        // loader.setController();
+        loader.setController(new AppController());
         ScrollPane mainPane = loader.load();
         Scene scene = new Scene(mainPane);
         primaryStage.setScene(scene);

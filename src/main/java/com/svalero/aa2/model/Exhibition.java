@@ -1,6 +1,5 @@
-package com.sanvalero.aa2.model;
+package com.svalero.aa2.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,8 +20,8 @@ public class Exhibition {
     String web_url;
     String image_url;
     String status;
-    LocalDateTime aic_start_at;
-    LocalDateTime aid_end_at;
+    String aic_start_at;
+    String aid_end_at;
     int gallery_id;
     String gallery_title;
     List<Integer> artwork_ids;
@@ -32,9 +31,7 @@ public class Exhibition {
     UUID image_id;
     List<UUID> alt_image_ids;
     List<Integer> document_ids;
-    String suggest_autocomplete_boosted;
-    Object suggest_autocomplete_all;
-    LocalDateTime source_updated_at;
-    LocalDateTime updated_at;
-    LocalDateTime timestamp;
+    String source_updated_at;
+    String updated_at;
+    String timestamp;
 }

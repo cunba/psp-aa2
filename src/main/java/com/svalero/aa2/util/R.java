@@ -1,4 +1,4 @@
-package com.sanvalero.aa2.util;
+package com.svalero.aa2.util;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,6 +10,6 @@ public class R {
     }
 
     public static URL getUI(String name) {
-        return Thread.currentThread().getContextClassLoader().getResource("url" + File.separator + name);
+        return Thread.currentThread().getContextClassLoader().getResource("ui" + File.separator + name);
     }
 }
