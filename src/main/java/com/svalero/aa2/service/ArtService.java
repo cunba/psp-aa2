@@ -43,7 +43,7 @@ public class ArtService {
         return this.api.getAllArtworks();
     }
 
-    public Observable<Response<Artwork>> getArtworkById(int id) {
+    public Observable<Response<Artwork>> getArtworkById(int id) throws Exception {
         return this.api.getArtworkById(id);
     }
 
@@ -51,7 +51,7 @@ public class ArtService {
         return this.api.getAllArtists();
     }
 
-    public Observable<Response<Artist>> getArtistById(int id) {
+    public Observable<Response<Artist>> getArtistById(int id) throws Exception {
         return this.api.getArtistById(id);
     }
 
@@ -59,7 +59,7 @@ public class ArtService {
         return this.api.getAllExhibitions();
     }
 
-    public Observable<Response<Exhibition>> getExhibitionById(int id) {
+    public Observable<Response<Exhibition>> getExhibitionById(int id) throws Exception {
         return this.api.getExhibitionById(id);
     }
 
@@ -67,7 +67,7 @@ public class ArtService {
         return this.api.getAllArtworkTypes();
     }
 
-    public Observable<Response<ArtworkType>> getArtworkTypeById(int id) {
+    public Observable<Response<ArtworkType>> getArtworkTypeById(int id) throws Exception {
         return this.api.getArtworkTypeById(id);
     }
 }
