@@ -52,7 +52,7 @@ public class Artwork {
     Boolean has_educational_resources;
     Boolean has_advanced_imaging;
     float colorfulness;
-    ArtworkColor color;
+    Color color;
     float latitude;
     float longitude;
     String latlon;

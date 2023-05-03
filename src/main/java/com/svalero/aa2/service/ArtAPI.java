@@ -1,9 +1,12 @@
 package com.svalero.aa2.service;
 
+import java.util.UUID;
+
 import com.svalero.aa2.model.Artist;
 import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.ArtworkType;
 import com.svalero.aa2.model.Exhibition;
+import com.svalero.aa2.model.Image;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.model.ResponsePaginated;
 
@@ -44,5 +47,10 @@ public interface ArtAPI {
 
     @GET("/api/v1/artwork-types/{id}")
     Observable<Response<ArtworkType>> getArtworkTypeById(@Path("id") int id);
+
+    // IMAGE
+
+    @GET("/api/v1/s/{id}")
+    Observable<Response<Image>> getImageById(@Path("id") UUID id);
 
 }

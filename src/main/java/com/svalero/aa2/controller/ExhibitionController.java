@@ -5,9 +5,11 @@ import java.util.List;
 import com.svalero.aa2.App;
 import com.svalero.aa2.model.Artist;
 import com.svalero.aa2.model.Exhibition;
+import com.svalero.aa2.model.Image;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.task.ArtistTask;
 import com.svalero.aa2.task.ExhibitionTaskById;
+import com.svalero.aa2.task.ImageTask;
 
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
@@ -34,10 +36,13 @@ public class ExhibitionController {
 
     private ExhibitionTaskById exhibitionTask;
     private ArtistTask artistTask;
-    private App app = new App();
+    private ImageTask imageTask;
+    private App app;
 
     @FXML
     public void initialize() {
+        app = new App();
+
         artistList = FXCollections.observableArrayList();
         exhibitionArtistsLV.setItems(artistList);
 
@@ -59,12 +64,27 @@ public class ExhibitionController {
             });
         };
 
+        Consumer<Response<Image>> imageConsumer = (response) -> {
+            Image image = response.getData();
+            Platform.runLater(() -> {
+
+            });
+            System.out.println(image.toString());
+        };
+
         Consumer<Response<Exhibition>> consumer = (response) -> {
             Exhibition exhibition = response.getData();
             exhibitionTitleText.setText(exhibition.getTitle());
 
             if (exhibition.getGallery_title() != null) {
                 exhibitionGalleryTitleText.setText("Gallery " + exhibition.getGallery_title());
+            }
+
+            if (exhibition.getImage_url() == null) {
+                if (exhibition.getImage_id() != null) {
+                    imageTask = new ImageTask(exhibition.getImage_id(), imageConsumer, null);
+                    new Thread(imageTask).start();
+                }
             }
 
             if (exhibition.getArtist_ids() != null && exhibition.getArtist_ids().size() != 0) {
@@ -110,9 +130,24 @@ public class ExhibitionController {
             });
         };
 
+        Consumer<Response<Image>> imageConsumer = (response) -> {
+            Image image = response.getData();
+            Platform.runLater(() -> {
+
+            });
+            System.out.println(image.toString());
+        };
+
         exhibitionTitleText.setText(exhibition.getTitle());
         if (exhibition.getGallery_title() != null) {
             exhibitionGalleryTitleText.setText("Gallery " + exhibition.getGallery_title());
+        }
+
+        if (exhibition.getImage_url() == null) {
+            if (exhibition.getImage_id() != null) {
+                imageTask = new ImageTask(exhibition.getImage_id(), imageConsumer, null);
+                new Thread(imageTask).start();
+            }
         }
 
         if (exhibition.getArtist_ids() != null && exhibition.getArtist_ids().size() != 0) {

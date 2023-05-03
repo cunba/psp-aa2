@@ -1,11 +1,14 @@
 package com.svalero.aa2.service;
 
+import java.util.UUID;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.svalero.aa2.model.Artist;
 import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.ArtworkType;
 import com.svalero.aa2.model.Exhibition;
+import com.svalero.aa2.model.Image;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.model.ResponsePaginated;
 
@@ -43,7 +46,7 @@ public class ArtService {
         return this.api.getAllArtworks();
     }
 
-    public Observable<Response<Artwork>> getArtworkById(int id) throws Exception {
+    public Observable<Response<Artwork>> getArtworkById(int id) {
         return this.api.getArtworkById(id);
     }
 
@@ -51,7 +54,7 @@ public class ArtService {
         return this.api.getAllArtists();
     }
 
-    public Observable<Response<Artist>> getArtistById(int id) throws Exception {
+    public Observable<Response<Artist>> getArtistById(int id) {
         return this.api.getArtistById(id);
     }
 
@@ -59,7 +62,7 @@ public class ArtService {
         return this.api.getAllExhibitions();
     }
 
-    public Observable<Response<Exhibition>> getExhibitionById(int id) throws Exception {
+    public Observable<Response<Exhibition>> getExhibitionById(int id) {
         return this.api.getExhibitionById(id);
     }
 
@@ -67,7 +70,11 @@ public class ArtService {
         return this.api.getAllArtworkTypes();
     }
 
-    public Observable<Response<ArtworkType>> getArtworkTypeById(int id) throws Exception {
+    public Observable<Response<ArtworkType>> getArtworkTypeById(int id) {
         return this.api.getArtworkTypeById(id);
+    }
+
+    public Observable<Response<Image>> getImageById(UUID id) {
+        return this.api.getImageById(id);
     }
 }

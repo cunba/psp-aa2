@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -29,10 +30,27 @@
                               <Insets left="5.0" />
                            </HBox.margin>
                         </HBox>
+                        <HBox alignment="CENTER" prefWidth="700.0">
+                           <children>
+                              <Button fx:id="findArtworkByIdButton" mnemonicParsing="false" text="Sort page by artwork type" />
+                              <Button fx:id="findArtworkByIdButton2" mnemonicParsing="false" text="Sort page by artwork title">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="findArtworkByIdButton21" mnemonicParsing="false" text="Sort page by artist" />
+                              <ToggleButton fx:id="artworkSortByArtworkTypeTB" mnemonicParsing="false" text="Sort page by artwork type" />
+                              <ToggleButton fx:id="artworkSortByTitleTB" mnemonicParsing="false" text="Sort page by artwork title" />
+                              <ToggleButton fx:id="artworkSortByArtistTB" mnemonicParsing="false" text="Sort page by artist" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </HBox>
                         <HBox alignment="CENTER_RIGHT" prefWidth="700.0">
                            <children>
-                              <TextField fx:id="artworkIdTF" promptText="Artwork ID" />
-                              <Button fx:id="findArtworkByIdButton" mnemonicParsing="false" text="Find artwork by ID" />
+                              <TextField fx:id="artworkIdTF1" promptText="Artwork ID" />
+                              <Button fx:id="findArtworkByIdButton1" mnemonicParsing="false" text="Find artwork by ID" />
                            </children>
                            <HBox.margin>
                               <Insets right="5.0" />
@@ -54,14 +72,39 @@
          <content>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="700.0">
-                     <children>
-                        <TextField fx:id="exhibitionIdTF" promptText="Exhibition ID" />
-                        <Button fx:id="findExhibitionByIdButton" mnemonicParsing="false" text="Find exhibition by ID" />
-                     </children>
+                  <HBox>
                      <VBox.margin>
                         <Insets left="5.0" />
                      </VBox.margin>
+                     <children>
+                        <HBox prefWidth="700.0" />
+                        <HBox alignment="CENTER_LEFT" prefWidth="700.0">
+                           <children>
+                              <Button fx:id="findArtworkByIdButton2" mnemonicParsing="false" text="Sort page by title" />
+                              <Button fx:id="findArtworkByIdButton21" mnemonicParsing="false" text="Sort page by gallery title">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="findArtworkByIdButton211" mnemonicParsing="false" text="Sort page by open date" />
+                              <ToggleButton fx:id="exhibitionSortByTitleTB" mnemonicParsing="false" text="Sort page by title" />
+                              <ToggleButton fx:id="exhibitionSortByGalleryTB" mnemonicParsing="false" text="Sort page by gallery" />
+                              <ToggleButton fx:id="exhibitionSortByOpenDate" mnemonicParsing="false" text="Sort page by open date" />
+                           </children>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="700.0">
+                           <children>
+                              <TextField fx:id="exhibitionIdTF" promptText="Exhibition ID" />
+                              <Button fx:id="findExhibitionByIdButton" mnemonicParsing="false" text="Find exhibition by ID" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </HBox>
+                     </children>
                   </HBox>
                   <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1400.0">
                      <content>
