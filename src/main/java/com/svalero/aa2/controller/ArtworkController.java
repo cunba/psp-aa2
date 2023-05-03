@@ -2,7 +2,7 @@ package com.svalero.aa2.controller;
 
 import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.Response;
-import com.svalero.aa2.task.ArtworkTask;
+import com.svalero.aa2.task.ArtworkTaskById;
 
 import io.reactivex.functions.Consumer;
 import javafx.event.ActionEvent;
@@ -15,7 +15,7 @@ public class ArtworkController {
     public Text artworkDescriptionText;
     public Text artworkTitleText;
 
-    private ArtworkTask artworkTask;
+    private ArtworkTaskById artworkTask;
 
     @FXML
     public void showArtworkById(ActionEvent event, int artworkId) {
@@ -34,7 +34,7 @@ public class ArtworkController {
             artworkTypeText.setText("Artwork not found");
         };
 
-        artworkTask = new ArtworkTask(artworkId, null, consumer, throwable);
+        artworkTask = new ArtworkTaskById(artworkId, consumer, throwable);
         new Thread(artworkTask).start();
     }
 

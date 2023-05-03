@@ -7,7 +7,7 @@ import com.svalero.aa2.model.Artist;
 import com.svalero.aa2.model.Exhibition;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.task.ArtistTask;
-import com.svalero.aa2.task.ExhibitionTask;
+import com.svalero.aa2.task.ExhibitionTaskById;
 
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
@@ -32,7 +32,7 @@ public class ExhibitionController {
     private ObservableList<String> artistList;
     private ObservableList<String> artworkList;
 
-    private ExhibitionTask exhibitionTask;
+    private ExhibitionTaskById exhibitionTask;
     private ArtistTask artistTask;
     private App app = new App();
 
@@ -98,16 +98,35 @@ public class ExhibitionController {
             exhibitionTitleText.setText("Exhibition Not Found");
         };
 
-        exhibitionTask = new ExhibitionTask(exhibitionId, null, consumer, throwable);
+        exhibitionTask = new ExhibitionTaskById(exhibitionId, consumer, throwable);
         new Thread(exhibitionTask).start();
     }
 
     @FXML
     public void showExhibition(ActionEvent event, Exhibition exhibition) {
+        Consumer<Response<Artist>> artistConsumer = (response) -> {
+            Platform.runLater(() -> {
+                artistList.add(response.getData().getTitle());
+            });
+        };
+
         exhibitionTitleText.setText(exhibition.getTitle());
         if (exhibition.getGallery_title() != null) {
             exhibitionGalleryTitleText.setText("Gallery " + exhibition.getGallery_title());
         }
+
+        if (exhibition.getArtist_ids() != null && exhibition.getArtist_ids().size() != 0) {
+            List<Integer> artistIds = exhibition.getArtist_ids();
+            for (int artistId : artistIds) {
+                artistTask = new ArtistTask(artistId, artistConsumer, t -> System.out.println(t.getMessage()));
+                new Thread(artistTask).start();
+            }
+        }
+
+        if (exhibition.getArtwork_titles() != null && exhibition.getArtwork_titles().size() != 0) {
+            artworkList.addAll(exhibition.getArtwork_titles());
+        }
+
         if (exhibition.getWeb_url() != null) {
             Platform.runLater(() -> {
                 exhibitionWebText.setText("Source: ");
