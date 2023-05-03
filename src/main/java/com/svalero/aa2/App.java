@@ -1,13 +1,12 @@
 package com.svalero.aa2;
 
-import com.svalero.aa2.controller.ExhibitionController;
+import com.svalero.aa2.controller.MainController;
 import com.svalero.aa2.util.R;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -15,15 +14,14 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(R.getUI("exhibition-view.fxml"));
-        ExhibitionController exhibitionController = new ExhibitionController();
-        loader.setController(exhibitionController);
-        VBox mainPane = loader.load();
+        loader.setLocation(R.getUI("main-view.fxml"));
+        MainController mainController = new MainController();
+        loader.setController(mainController);
+        TabPane mainPane = loader.load();
         Scene scene = new Scene(mainPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Art Institute of Chicago API");
         primaryStage.show();
-        exhibitionController.showExhibitionById(new ActionEvent(), 9894);
     }
 
     @Override
