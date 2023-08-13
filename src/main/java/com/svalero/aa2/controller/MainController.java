@@ -21,22 +21,21 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         FXMLLoader loaderArtworksTab = new FXMLLoader();
-        // FXMLLoader loaderExhibitionsTab = new FXMLLoader();
+        FXMLLoader loaderExhibitionsTab = new FXMLLoader();
 
         ArtworkTabController artworkTabController = new ArtworkTabController();
         loaderArtworksTab.setLocation(R.getUI("artwork_tab-view.fxml"));
         loaderArtworksTab.setController(artworkTabController);
 
-        // ExhibitionTabController exhibitionTabController = new
-        // ExhibitionTabController();
-        // loaderArtworksTab.setLocation(R.getUI("exhibition_tab-view.fxml"));
-        // loaderArtworksTab.setController(exhibitionTabController);
+        ExhibitionTabController exhibitionTabController = new ExhibitionTabController();
+        loaderExhibitionsTab.setLocation(R.getUI("exhibition_tab-view.fxml"));
+        loaderExhibitionsTab.setController(exhibitionTabController);
 
         try {
             VBox artworks = loaderArtworksTab.load();
             artworksTab.setContent(artworks);
-            // VBox exhibitions = loaderExhibitionsTab.load();
-            // exhibitionsTab.setContent(exhibitions);
+            VBox exhibitions = loaderExhibitionsTab.load();
+            exhibitionsTab.setContent(exhibitions);
         } catch (IOException e) {
             e.printStackTrace();
         }

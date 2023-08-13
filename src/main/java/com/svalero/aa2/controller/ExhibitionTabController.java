@@ -16,10 +16,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
 public class ExhibitionTabController implements Initializable {
     @FXML
@@ -45,23 +43,7 @@ public class ExhibitionTabController implements Initializable {
 
         exhibitionLV.setItems(exhibitionList);
 
-        exhibitionLV.setCellFactory(new Callback<ListView<VBox>, ListCell<VBox>>() {
-            @Override
-            public ListCell<VBox> call(ListView<VBox> list) {
-                ListCell<VBox> cell = new ListCell<VBox>() {
-                    @Override
-                    public void updateItem(VBox item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setGraphic(item);
-                    }
-                };
-
-                return cell;
-            }
-        });
-
         Consumer<ResponsePaginated<Exhibition>> consumer = (response) -> {
-            System.out.println("Entra");
             for (Exhibition exhibition : response.getData()) {
                 VBox vbox = initializeExhibitionScene(exhibition);
                 exhibitionList.add(vbox);
@@ -69,7 +51,11 @@ public class ExhibitionTabController implements Initializable {
 
         };
 
-        exhibitionTask = new ExhibitionTask(consumer, null);
+        Consumer<Throwable> throwable = (error) -> {
+            System.out.println(error.toString());
+        };
+
+        exhibitionTask = new ExhibitionTask(consumer, throwable);
         new Thread(exhibitionTask).start();
     }
 
@@ -97,9 +83,9 @@ public class ExhibitionTabController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(R.getUI("exhibition-view.fxml"));
         ExhibitionController exhibitionController = new ExhibitionController();
-        exhibitionController.showExhibition(new ActionEvent(), exhibition);
         loader.setController(exhibitionController);
         VBox exhibitionPane = loader.load();
+        exhibitionController.showExhibition(exhibition);
         return exhibitionPane;
     }
 

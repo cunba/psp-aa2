@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Pagination?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
@@ -49,11 +48,7 @@
             </HBox>
          </children>
       </HBox>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1200.0">
-         <content>
-            <ListView fx:id="artworkLV" prefHeight="680.0" prefWidth="1200.0" />
-         </content>
-      </ScrollPane>
+      <ListView fx:id="artworkLV" prefHeight="550.0" prefWidth="1200.0" />
       <Pagination fx:id="artworkPagination" prefHeight="20.0" prefWidth="600.0" />
    </children>
 </VBox>

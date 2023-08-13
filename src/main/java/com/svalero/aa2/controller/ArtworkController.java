@@ -8,7 +8,6 @@ import com.svalero.aa2.task.ImageTask;
 
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
@@ -23,7 +22,7 @@ public class ArtworkController {
     private ArtworkTaskById artworkTask;
     private ImageTask imageTask;
 
-    public void showArtworkById(ActionEvent event, int artworkId) {
+    public void showArtworkById(int artworkId) {
         artworkDescriptionText.setText(null);
         artworkTitleText.setText(null);
         artworkTypeText.setText(null);
@@ -58,7 +57,7 @@ public class ArtworkController {
         new Thread(artworkTask).start();
     }
 
-    public void showArtwork(ActionEvent event, Artwork artwork) {
+    public void showArtwork(Artwork artwork) {
         artworkDescriptionText.setText(artwork.getPublication_history());
         artworkTypeText.setText(artwork.getArtwork_type_title());
         artworkTitleText.setText(artwork.getTitle() + "\t(" + artwork.getArtist_title() + ")");

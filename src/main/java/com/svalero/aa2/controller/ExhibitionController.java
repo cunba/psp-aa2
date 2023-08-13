@@ -17,7 +17,6 @@ import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
@@ -57,11 +56,9 @@ public class ExhibitionController implements Initializable {
 
         artworkList = FXCollections.observableArrayList();
         exhibitionArtworksLV.setItems(artworkList);
-
-        // showExhibitionById(new ActionEvent(), 9894);
     }
 
-    public void showExhibitionById(ActionEvent event, int exhibitionId) {
+    public void showExhibitionById(int exhibitionId) {
         exhibitionDescriptionText.setText(null);
         exhibitionGalleryTitleText.setText(null);
         exhibitionTitleText.setText(null);
@@ -132,7 +129,7 @@ public class ExhibitionController implements Initializable {
         new Thread(exhibitionTask).start();
     }
 
-    public void showExhibition(ActionEvent event, Exhibition exhibition) {
+    public void showExhibition(Exhibition exhibition) {
         exhibitionDescriptionText.setText(null);
         exhibitionGalleryTitleText.setText(null);
         exhibitionTitleText.setText(null);

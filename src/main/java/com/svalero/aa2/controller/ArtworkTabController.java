@@ -60,7 +60,6 @@ public class ArtworkTabController implements Initializable {
         // });
 
         Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
-            System.out.println("Esta entrando aqui");
             for (Artwork artwork : response.getData()) {
                 VBox vbox = initializeArtworkScene(artwork);
                 artworkList.add(vbox);
@@ -102,24 +101,11 @@ public class ArtworkTabController implements Initializable {
 
     private VBox initializeArtworkScene(Artwork artwork) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(R.getUI("artwork-view.fxml"));
         ArtworkController artworkController = new ArtworkController();
-        artworkController.showArtwork(new ActionEvent(), artwork);
+        loader.setLocation(R.getUI("artwork-view.fxml"));
         loader.setController(artworkController);
         VBox artworkPane = loader.load();
+        artworkController.showArtwork(artwork);
         return artworkPane;
     }
-
-    // static class Cell extends ListCell<VBox> {
-    // @Override
-    // public void updateItem(VBox item, boolean empty) {
-    // super.updateItem(item, empty);
-    // System.out.println("entra");
-    // // Rectangle rect = new Rectangle(100, 20);
-    // // if (item != null) {
-    // // rect.setFill(Color.web(item));
-    // setGraphic(item);
-    // // }
-    // }
-    // }
 }
