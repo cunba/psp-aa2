@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
       <Tab fx:id="artworksTab" closable="false" text="ARTWORKS">
          <content>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1400.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1200.0">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefWidth="700.0">
                            <children>
@@ -54,9 +54,9 @@
                         </HBox>
                      </children>
                   </HBox>
-                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1400.0">
+                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1200.0">
                      <content>
-                        <ListView fx:id="artworkLV" prefHeight="680.0" prefWidth="1400.0" />
+                        <ListView fx:id="artworkLV" prefHeight="680.0" prefWidth="1200.0" />
                      </content>
                   </ScrollPane>
                   <Pagination fx:id="artworkPagination" prefHeight="20.0" prefWidth="600.0" />
@@ -97,9 +97,9 @@
                         </HBox>
                      </children>
                   </HBox>
-                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1400.0">
+                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1200.0">
                      <content>
-                        <ListView fx:id="exhibitionLV" prefHeight="680.0" prefWidth="1400.0" />
+                        <ListView fx:id="exhibitionLV" prefHeight="680.0" prefWidth="1200.0" />
                      </content>
                   </ScrollPane>
                   <Pagination fx:id="exhibitionPagination" prefHeight="20.0" prefWidth="600.0" />

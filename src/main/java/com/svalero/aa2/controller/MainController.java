@@ -1,6 +1,8 @@
 package com.svalero.aa2.controller;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.Exhibition;
@@ -15,16 +17,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
-public class MainController {
+public class MainController implements Initializable {
     public Tab artworksTab;
     public Tab exhibitionsTab;
-    public ListView<Scene> artworkLV;
-    public ListView<Scene> exhibitionLV;
+    public ListView<VBox> artworkLV;
+    public ListView<VBox> exhibitionLV;
 
     private Boolean sortArtworksPageByArtworkTypePressed = false;
     private Boolean sortArtworksPageByTitlePressed = false;
@@ -34,8 +38,8 @@ public class MainController {
     private Boolean sortExhibitionsPageByGalleryPressed = false;
     private Boolean sortExhibitionsPageByOpenDatePressed = false;
 
-    private ObservableList<Scene> artworkList;
-    private ObservableList<Scene> exhibitionList;
+    private ObservableList<VBox> artworkList;
+    private ObservableList<VBox> exhibitionList;
 
     private ExhibitionTask exhibitionTask;
     private ArtworkTask artworkTask;
@@ -43,13 +47,46 @@ public class MainController {
     // private ExhibitionTaskById exhibitionTaskById;
     // private ArtworkTaskById artworkTaskById;
 
-    @FXML
-    public void initialize() {
+    public MainController() {
         artworkList = FXCollections.observableArrayList();
+        exhibitionList = FXCollections.observableArrayList();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        exhibitionLV.setItems(exhibitionList);
         artworkLV.setItems(artworkList);
 
-        exhibitionList = FXCollections.observableArrayList();
-        exhibitionLV.setItems(exhibitionList);
+        artworkLV.setCellFactory(new Callback<ListView<VBox>, ListCell<VBox>>() {
+            @Override
+            public ListCell<VBox> call(ListView<VBox> list) {
+                ListCell<VBox> cell = new ListCell<VBox>() {
+                    @Override
+                    public void updateItem(VBox item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(item);
+                    }
+                };
+
+                return cell;
+            }
+        });
+
+        exhibitionLV.setCellFactory(new Callback<ListView<VBox>, ListCell<VBox>>() {
+            @Override
+            public ListCell<VBox> call(ListView<VBox> list) {
+                ListCell<VBox> cell = new ListCell<VBox>() {
+                    @Override
+                    public void updateItem(VBox item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(item);
+                    }
+                };
+
+                return cell;
+            }
+        });
 
         initializeArtworks();
         initializeExhibitions();
@@ -100,14 +137,15 @@ public class MainController {
 
     }
 
-    @FXML
+    // @FXML
     private void initializeArtworks() {
+        System.out.println("entra a artwork");
         Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
+            System.out.println("Esta entrando aqui");
             for (Artwork artwork : response.getData()) {
-                Scene scene = initializeArtworkScene(artwork);
-                exhibitionList.add(scene);
+                VBox vbox = initializeArtworkScene(artwork);
+                exhibitionList.add(vbox);
             }
-
         };
 
         Consumer<Throwable> throwable = (error) -> {
@@ -118,12 +156,13 @@ public class MainController {
         new Thread(artworkTask).start();
     }
 
-    @FXML
+    // @FXML
     private void initializeExhibitions() {
+        System.out.println("entra a exhibition");
         Consumer<ResponsePaginated<Exhibition>> consumer = (response) -> {
             for (Exhibition exhibition : response.getData()) {
-                Scene scene = initializeExhibitionScene(exhibition);
-                exhibitionList.add(scene);
+                VBox vbox = initializeExhibitionScene(exhibition);
+                exhibitionList.add(vbox);
             }
 
         };
@@ -132,27 +171,38 @@ public class MainController {
         new Thread(exhibitionTask).start();
     }
 
-    @FXML
-    private Scene initializeArtworkScene(Artwork artwork) throws IOException {
+    // @FXML
+    private VBox initializeArtworkScene(Artwork artwork) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(R.getUI("artwork-view.fxml"));
         ArtworkController artworkController = new ArtworkController();
         artworkController.showArtwork(new ActionEvent(), artwork);
         loader.setController(artworkController);
         VBox artworkPane = loader.load();
-        Scene scene = new Scene(artworkPane);
-        return scene;
+        return artworkPane;
     }
 
-    @FXML
-    private Scene initializeExhibitionScene(Exhibition exhibition) throws IOException {
+    // @FXML
+    private VBox initializeExhibitionScene(Exhibition exhibition) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(R.getUI("exhibition-view.fxml"));
         ExhibitionController exhibitionController = new ExhibitionController();
         exhibitionController.showExhibition(new ActionEvent(), exhibition);
         loader.setController(exhibitionController);
         VBox exhibitionPane = loader.load();
-        Scene scene = new Scene(exhibitionPane);
-        return scene;
+        return exhibitionPane;
     }
+
+    // static class Cell extends ListCell<VBox> {
+    // @Override
+    // public void updateItem(VBox item, boolean empty) {
+    // super.updateItem(item, empty);
+    // System.out.println("entra");
+    // // Rectangle rect = new Rectangle(100, 20);
+    // // if (item != null) {
+    // // rect.setFill(Color.web(item));
+    // setGraphic(item);
+    // // }
+    // }
+    // }
 }
