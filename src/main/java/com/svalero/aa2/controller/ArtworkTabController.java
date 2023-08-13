@@ -16,10 +16,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
 public class ArtworkTabController implements Initializable {
     @FXML
@@ -46,20 +44,20 @@ public class ArtworkTabController implements Initializable {
 
         artworkLV.setItems(artworkList);
 
-        artworkLV.setCellFactory(new Callback<ListView<VBox>, ListCell<VBox>>() {
-            @Override
-            public ListCell<VBox> call(ListView<VBox> list) {
-                ListCell<VBox> cell = new ListCell<VBox>() {
-                    @Override
-                    public void updateItem(VBox item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setGraphic(item);
-                    }
-                };
+        // artworkLV.setCellFactory(new Callback<ListView<VBox>, ListCell<VBox>>() {
+        // @Override
+        // public ListCell<VBox> call(ListView<VBox> list) {
+        // ListCell<VBox> cell = new ListCell<VBox>() {
+        // @Override
+        // public void updateItem(VBox item, boolean empty) {
+        // super.updateItem(item, empty);
+        // setGraphic(item);
+        // }
+        // };
 
-                return cell;
-            }
-        });
+        // return cell;
+        // }
+        // });
 
         Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
             System.out.println("Esta entrando aqui");

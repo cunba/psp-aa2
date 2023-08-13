@@ -50,7 +50,7 @@ public interface ArtAPI {
 
     // IMAGE
 
-    @GET("/api/v1/s/{id}")
+    @GET("/api/v1/images/{id}")
     Observable<Response<Image>> getImageById(@Path("id") UUID id);
 
 }
