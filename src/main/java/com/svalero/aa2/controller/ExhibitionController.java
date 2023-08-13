@@ -1,6 +1,8 @@
 package com.svalero.aa2.controller;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.svalero.aa2.App;
 import com.svalero.aa2.model.Artist;
@@ -17,18 +19,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
 
-public class ExhibitionController {
-
+public class ExhibitionController implements Initializable {
+    @FXML
     public Text exhibitionTitleText;
+    @FXML
     public Text exhibitionGalleryTitleText;
+    @FXML
     public Text exhibitionDescriptionText;
+    @FXML
     public Text exhibitionWebText;
+    @FXML
     public Hyperlink exhibitionWebHyperlink;
+    @FXML
     public ListView<String> exhibitionArtistsLV;
+    @FXML
     public ListView<String> exhibitionArtworksLV;
 
     private ObservableList<String> artistList;
@@ -39,8 +48,8 @@ public class ExhibitionController {
     private ImageTask imageTask;
     private App app;
 
-    @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         app = new App();
 
         artistList = FXCollections.observableArrayList();
@@ -48,9 +57,10 @@ public class ExhibitionController {
 
         artworkList = FXCollections.observableArrayList();
         exhibitionArtworksLV.setItems(artworkList);
+
+        // showExhibitionById(new ActionEvent(), 9894);
     }
 
-    @FXML
     public void showExhibitionById(ActionEvent event, int exhibitionId) {
         exhibitionDescriptionText.setText(null);
         exhibitionGalleryTitleText.setText(null);
@@ -122,8 +132,13 @@ public class ExhibitionController {
         new Thread(exhibitionTask).start();
     }
 
-    @FXML
     public void showExhibition(ActionEvent event, Exhibition exhibition) {
+        exhibitionDescriptionText.setText(null);
+        exhibitionGalleryTitleText.setText(null);
+        exhibitionTitleText.setText(null);
+        exhibitionWebText.setText(null);
+        exhibitionWebHyperlink.setText(null);
+
         Consumer<Response<Artist>> artistConsumer = (response) -> {
             Platform.runLater(() -> {
                 artistList.add(response.getData().getTitle());

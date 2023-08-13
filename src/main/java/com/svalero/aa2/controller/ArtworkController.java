@@ -13,15 +13,16 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
 public class ArtworkController {
-
+    @FXML
     public Text artworkTypeText;
+    @FXML
     public Text artworkDescriptionText;
+    @FXML
     public Text artworkTitleText;
 
     private ArtworkTaskById artworkTask;
     private ImageTask imageTask;
 
-    @FXML
     public void showArtworkById(ActionEvent event, int artworkId) {
         artworkDescriptionText.setText(null);
         artworkTitleText.setText(null);
@@ -57,7 +58,6 @@ public class ArtworkController {
         new Thread(artworkTask).start();
     }
 
-    @FXML
     public void showArtwork(ActionEvent event, Artwork artwork) {
         artworkDescriptionText.setText(artwork.getPublication_history());
         artworkTypeText.setText(artwork.getArtwork_type_title());
