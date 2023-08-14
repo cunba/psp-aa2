@@ -13,5 +13,6 @@ public class ResponsePagination {
     int offset;
     int total_pages;
     int current_page;
+    String prev_url;
     String next_url;
 }

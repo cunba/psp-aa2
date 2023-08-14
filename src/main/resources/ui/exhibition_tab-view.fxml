@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="630.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="620.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefWidth="1300.0">
          <VBox.margin>
@@ -24,7 +24,7 @@
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="exhibitionSortByOpenDate" mnemonicParsing="false" onAction="#sortExhibitionsPageByOpenDate" text="Sort page by open date" />
+                  <ToggleButton fx:id="exhibitionSortByOpenDateTB" mnemonicParsing="false" onAction="#sortExhibitionsPageByOpenDate" text="Sort page by open date" />
                </children>
                <HBox.margin>
                   <Insets left="5.0" />

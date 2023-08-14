@@ -15,7 +15,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(R.getUI("main-view.fxml"));
-        loader.setController(new MainController());
+        loader.setController(new MainController(primaryStage));
         TabPane mainPane = loader.load();
         Scene scene = new Scene(mainPane);
         primaryStage.setScene(scene);
