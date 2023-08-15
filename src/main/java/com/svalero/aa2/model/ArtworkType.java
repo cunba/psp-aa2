@@ -16,4 +16,9 @@ public class ArtworkType {
     String source_updated_at;
     String updated_at;
     String timestamp;
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }

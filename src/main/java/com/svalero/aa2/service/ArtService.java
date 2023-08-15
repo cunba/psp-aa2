@@ -46,12 +46,20 @@ public class ArtService {
         return this.api.getAllArtworks();
     }
 
+    public Observable<ResponsePaginated<Artwork>> getAllArtworksPage(int page) {
+        return this.api.getAllArtworksPage(page);
+    }
+
     public Observable<Response<Artwork>> getArtworkById(int id) {
         return this.api.getArtworkById(id);
     }
 
     public Observable<ResponsePaginated<Artist>> getAllArtists() {
         return this.api.getAllArtists();
+    }
+
+    public Observable<ResponsePaginated<Artist>> getAllArtistsPage(int page) {
+        return this.api.getAllArtistsPage(page);
     }
 
     public Observable<Response<Artist>> getArtistById(int id) {
@@ -62,12 +70,20 @@ public class ArtService {
         return this.api.getAllExhibitions();
     }
 
+    public Observable<ResponsePaginated<Exhibition>> getAllExhibitionsPage(int page) {
+        return this.api.getAllExhibitionsPage(page);
+    }
+
     public Observable<Response<Exhibition>> getExhibitionById(int id) {
         return this.api.getExhibitionById(id);
     }
 
     public Observable<ResponsePaginated<ArtworkType>> getAllArtworkTypes() {
         return this.api.getAllArtworkTypes();
+    }
+
+    public Observable<ResponsePaginated<ArtworkType>> getAllArtworkTypesPage(int page) {
+        return this.api.getAllArtworkTypesPage(page);
     }
 
     public Observable<Response<ArtworkType>> getArtworkTypeById(int id) {

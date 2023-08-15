@@ -3,20 +3,28 @@ package com.svalero.aa2.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.svalero.aa2.model.Artwork;
+import com.svalero.aa2.model.ArtworkType;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.model.ResponsePaginated;
 import com.svalero.aa2.task.ArtworkTask;
 import com.svalero.aa2.task.ArtworkTaskById;
+import com.svalero.aa2.task.ArtworkTypeTask;
+import com.svalero.aa2.task.ArtworkTypeTaskPage;
 import com.svalero.aa2.util.R;
 
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,48 +47,44 @@ public class ArtworkTabController implements Initializable {
     @FXML
     public Pagination artworkPagination;
     @FXML
-    public ToggleButton artworkSortByArtworkTypeTB;
+    public Button artworkSortByArtworkTypeButton;
     @FXML
-    public ToggleButton artworkSortByTitleTB;
+    public Button artworkSortByTitleButton;
     @FXML
-    public ToggleButton artworkSortByArtistTB;
+    public Button artworkSortByArtistButton;
     @FXML
-    public ComboBox artworkTypesCB;
+    public ComboBox<ArtworkType> artworkTypesCB;
     @FXML
-    public ToggleButton artworkFilterByArtworkType;
+    public ToggleButton artworkFilterByArtworkTypeTB;
     @FXML
-    public TextField artworkIdTF1;
+    public TextField artworkIdTF;
     @FXML
     public Button findArtworkByIdButton;
 
-    private Boolean sortArtworksPageByArtworkTypePressed = false;
-    private Boolean sortArtworksPageByTitlePressed = false;
-    private Boolean sortArtworksPageByArtistPressed = false;
-    private Boolean filterArtworkPageByArtworkTypePressed = false;
-
     private ObservableList<VBox> artworkList;
-
+    private FilteredList<VBox> artworkListFiltered;
     private ArtworkTask artworkTask;
-    private List<ResponsePaginated<Artwork>> responses;
+    private Map<Integer, ResponsePaginated<Artwork>> responses;
     private Stage primaryStage;
-
-    // private ExhibitionTaskById exhibitionTaskById;
-    // private ArtworkTaskById artworkTaskById;
+    private int currentPage;
 
     public ArtworkTabController(Stage stage) {
         artworkList = FXCollections.observableArrayList();
-        responses = new ArrayList<>();
+        artworkListFiltered = new FilteredList<>(artworkList);
+        responses = new HashMap<>();
         primaryStage = stage;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        artworkLV.setItems(artworkList);
+        artworkLV.setItems(artworkListFiltered);
 
-        Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
-            responses.add(response);
+        Consumer<ResponsePaginated<Artwork>> consumerArtwork = (response) -> {
+            responses.put(response.getPagination().getCurrent_page(), response);
+            currentPage = response.getPagination().getCurrent_page();
             for (Artwork artwork : response.getData()) {
                 VBox vbox = showArtwork(artwork);
+                vbox.setId(String.valueOf(artwork.getId()));
                 artworkList.add(vbox);
             }
         };
@@ -89,34 +93,84 @@ public class ArtworkTabController implements Initializable {
             System.out.println(error.toString());
         };
 
-        artworkTask = new ArtworkTask(consumer, throwable);
+        Consumer<ResponsePaginated<ArtworkType>> consumerArtworkType = (response) -> {
+            for (ArtworkType artworkType : response.getData()) {
+                artworkTypesCB.getItems().add(artworkType);
+            }
+
+            if (response.getPagination().getNext_url() != null) {
+                addArtworkTypeNextPage(response.getPagination().getCurrent_page() + 1);
+            }
+        };
+
+        ArtworkTypeTask artworkTypeTask = new ArtworkTypeTask(consumerArtworkType, throwable);
+        new Thread(artworkTypeTask).start();
+
+        artworkTask = new ArtworkTask(consumerArtwork, throwable);
         new Thread(artworkTask).start();
+
+    }
+
+    private void addArtworkTypeNextPage(int page) {
+        Consumer<ResponsePaginated<ArtworkType>> consumerArtworkType = (response) -> {
+            for (ArtworkType artworkType : response.getData()) {
+                artworkTypesCB.getItems().add(artworkType);
+            }
+
+            if (response.getPagination().getNext_url() != null) {
+                addArtworkTypeNextPage(response.getPagination().getCurrent_page() + 1);
+            }
+        };
+
+        Consumer<Throwable> throwable = (error) -> {
+            System.out.println(error.toString());
+        };
+
+        ArtworkTypeTaskPage artworkTypeTaskPage = new ArtworkTypeTaskPage(page, consumerArtworkType, throwable);
+        new Thread(artworkTypeTaskPage).start();
     }
 
     @FXML
     public void sortArtworksPageByArtworkType(ActionEvent event) {
-        sortArtworksPageByArtworkTypePressed = sortArtworksPageByArtworkTypePressed == true ? false : true;
+        // sortArtworksPageByArtworkTypePressed = sortArtworksPageByArtworkTypePressed
+        // == true ? false : true;
     }
 
     @FXML
     public void sortArtworksPageByTitle(ActionEvent event) {
-        sortArtworksPageByTitlePressed = sortArtworksPageByTitlePressed == true ? false : true;
+        // sortArtworksPageByTitlePressed = sortArtworksPageByTitlePressed == true ?
+        // false : true;
     }
 
     @FXML
     public void sortArtworksPageByArtist(ActionEvent event) {
-        sortArtworksPageByArtistPressed = sortArtworksPageByArtistPressed == true ? false : true;
+        // sortArtworksPageByArtistPressed = sortArtworksPageByArtistPressed == true ?
+        // false : true;
     }
 
     @FXML
     public void filterArtworkPageByArtworkType(ActionEvent event) {
-        filterArtworkPageByArtworkTypePressed = filterArtworkPageByArtworkTypePressed == true ? false : true;
+        if (artworkFilterByArtworkTypeTB.isSelected()) {
+            ResponsePaginated<Artwork> response = responses.get(currentPage);
+            List<Artwork> responseListFiltered = response.getData().stream()
+                    .filter(artwork -> artwork.getArtwork_type_id() == artworkTypesCB.getValue()
+                            .getId())
+                    .collect(Collectors.toList());
+
+            List<String> ids = new ArrayList<>();
+            responseListFiltered.forEach((artwork) -> ids.add(String.valueOf(artwork.getId())));
+
+            Predicate<VBox> filter = vbox -> ids.contains(vbox.getId());
+            artworkListFiltered.setPredicate(filter);
+        } else {
+            artworkListFiltered.setPredicate(null);
+        }
     }
 
     @FXML
     public void findArtworkById() {
         try {
-            int id = Integer.parseInt(artworkIdTF1.getText());
+            int id = Integer.parseInt(artworkIdTF.getText());
 
             Consumer<Response<Artwork>> consumer = (response) -> {
                 Platform.runLater(() -> {
@@ -147,6 +201,26 @@ public class ArtworkTabController implements Initializable {
             new Thread(artworkTaskById).start();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onArtworkTypeChange() {
+        if (artworkFilterByArtworkTypeTB.isSelected()) {
+            ResponsePaginated<Artwork> response = responses.get(currentPage);
+            List<Artwork> responseListFiltered = response.getData().stream()
+                    .filter(artwork -> artwork.getArtwork_type_id() == artworkTypesCB.getValue()
+                            .getId())
+                    .collect(Collectors.toList());
+
+            List<String> ids = new ArrayList<>();
+            responseListFiltered.forEach((artwork) -> ids.add(String.valueOf(artwork.getId())));
+
+            Predicate<VBox> filter = vbox -> ids.contains(vbox.getId());
+            artworkListFiltered.setPredicate(null);
+            artworkListFiltered.setPredicate(filter);
+        } else {
+            artworkListFiltered.setPredicate(null);
         }
     }
 

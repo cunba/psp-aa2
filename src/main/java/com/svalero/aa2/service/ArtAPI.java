@@ -13,6 +13,7 @@ import com.svalero.aa2.model.ResponsePaginated;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ArtAPI {
 
@@ -20,6 +21,9 @@ public interface ArtAPI {
 
     @GET("/api/v1/artworks")
     Observable<ResponsePaginated<Artwork>> getAllArtworks();
+
+    @GET("/api/v1/artworks")
+    Observable<ResponsePaginated<Artwork>> getAllArtworksPage(@Query("page") int page);
 
     @GET("/api/v1/artworks/{id}")
     Observable<Response<Artwork>> getArtworkById(@Path("id") int id);
@@ -29,6 +33,9 @@ public interface ArtAPI {
     @GET("/api/v1/artists")
     Observable<ResponsePaginated<Artist>> getAllArtists();
 
+    @GET("/api/v1/artists")
+    Observable<ResponsePaginated<Artist>> getAllArtistsPage(@Query("page") int page);
+
     @GET("/api/v1/artists/{id}")
     Observable<Response<Artist>> getArtistById(@Path("id") int id);
 
@@ -37,6 +44,9 @@ public interface ArtAPI {
     @GET("/api/v1/exhibitions")
     Observable<ResponsePaginated<Exhibition>> getAllExhibitions();
 
+    @GET("/api/v1/exhibitions")
+    Observable<ResponsePaginated<Exhibition>> getAllExhibitionsPage(@Query("page") int page);
+
     @GET("/api/v1/exhibitions/{id}")
     Observable<Response<Exhibition>> getExhibitionById(@Path("id") int id);
 
@@ -44,6 +54,9 @@ public interface ArtAPI {
 
     @GET("/api/v1/artwork-types")
     Observable<ResponsePaginated<ArtworkType>> getAllArtworkTypes();
+
+    @GET("/api/v1/artwork-types")
+    Observable<ResponsePaginated<ArtworkType>> getAllArtworkTypesPage(@Query("page") int page);
 
     @GET("/api/v1/artwork-types/{id}")
     Observable<Response<ArtworkType>> getArtworkTypeById(@Path("id") int id);

@@ -1,28 +1,28 @@
 package com.svalero.aa2.task;
 
-import com.svalero.aa2.model.Artist;
-import com.svalero.aa2.model.Response;
+import com.svalero.aa2.model.ArtworkType;
+import com.svalero.aa2.model.ResponsePaginated;
 import com.svalero.aa2.service.ArtService;
 
 import io.reactivex.functions.Consumer;
 import javafx.concurrent.Task;
 
-public class ArtistTask extends Task<Integer> {
-    private int requestedId;
-    private Consumer<Response<Artist>> consumer;
+public class ArtworkTypeTaskPage extends Task<Integer> {
+    private Consumer<ResponsePaginated<ArtworkType>> consumer;
     private Consumer<Throwable> throwable;
+    private int page;
 
-    public ArtistTask(int requestedId, Consumer<Response<Artist>> consumer,
+    public ArtworkTypeTaskPage(int page, Consumer<ResponsePaginated<ArtworkType>> consumer,
             Consumer<Throwable> throwable) {
-        this.requestedId = requestedId;
         this.consumer = consumer;
         this.throwable = throwable;
+        this.page = page;
     }
 
     @Override
     protected Integer call() throws Exception {
         ArtService artService = new ArtService();
-        artService.getArtistById(requestedId).subscribe(consumer, throwable);
+        artService.getAllArtworkTypesPage(page).subscribe(consumer, throwable);
 
         return null;
     }

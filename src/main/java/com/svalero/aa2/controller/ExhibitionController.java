@@ -9,7 +9,7 @@ import com.svalero.aa2.model.Artist;
 import com.svalero.aa2.model.Exhibition;
 import com.svalero.aa2.model.Image;
 import com.svalero.aa2.model.Response;
-import com.svalero.aa2.task.ArtistTask;
+import com.svalero.aa2.task.ArtistTaskById;
 import com.svalero.aa2.task.ImageTask;
 
 import io.reactivex.functions.Consumer;
@@ -40,7 +40,7 @@ public class ExhibitionController implements Initializable {
 
     private ObservableList<String> artistList;
     private ObservableList<String> artworkList;
-    private ArtistTask artistTask;
+    private ArtistTaskById artistTask;
     private ImageTask imageTask;
     private App app;
 
@@ -91,7 +91,7 @@ public class ExhibitionController implements Initializable {
         if (exhibition.getArtist_ids() != null && exhibition.getArtist_ids().size() != 0) {
             List<Integer> artistIds = exhibition.getArtist_ids();
             for (int artistId : artistIds) {
-                artistTask = new ArtistTask(artistId, artistConsumer, t -> System.out.println(t.getMessage()));
+                artistTask = new ArtistTaskById(artistId, artistConsumer, t -> System.out.println(t.getMessage()));
                 new Thread(artistTask).start();
             }
         }

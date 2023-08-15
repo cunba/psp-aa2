@@ -16,13 +16,13 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefWidth="700.0">
                <children>
-                  <ToggleButton fx:id="artworkSortByArtworkTypeTB" mnemonicParsing="false" onAction="#sortArtworksPageByArtworkType" text="Sort page by artwork type" />
-                  <ToggleButton fx:id="artworkSortByTitleTB" mnemonicParsing="false" onAction="#sortArtworksPageByTitle" text="Sort page by title">
+                  <Button fx:id="artworkSortByArtworkTypeButton" mnemonicParsing="false" onAction="#sortArtworksPageByArtworkType" text="Sort page by artwork type" />
+                  <Button fx:id="artworkSortByTitleButton" mnemonicParsing="false" onAction="#sortArtworksPageByTitle" text="Sort page by title">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
-                  </ToggleButton>
-                  <ToggleButton fx:id="artworkSortByArtistTB" mnemonicParsing="false" onAction="#sortArtworksPageByArtist" text="Sort page by artist" />
+                  </Button>
+                  <Button fx:id="artworkSortByArtistButton" mnemonicParsing="false" onAction="#sortArtworksPageByArtist" text="Sort page by artist" />
                </children>
                <HBox.margin>
                   <Insets left="5.0" />
@@ -30,8 +30,8 @@
             </HBox>
             <HBox alignment="CENTER" prefWidth="700.0">
                <children>
-                  <ComboBox fx:id="artworkTypesCB" prefWidth="150.0" promptText="Artwork types" />
-                  <ToggleButton fx:id="artworkFilterByArtworkType" mnemonicParsing="false" onAction="#filterArtworkPageByArtworkType" text="Filter page by artwork type" />
+                  <ComboBox fx:id="artworkTypesCB" onAction="#onArtworkTypeChange" prefWidth="150.0" promptText="Artwork types" />
+                  <ToggleButton fx:id="artworkFilterByArtworkTypeTB" mnemonicParsing="false" onAction="#filterArtworkPageByArtworkType" text="Filter page by artwork type" />
                </children>
                <HBox.margin>
                   <Insets />
@@ -39,7 +39,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefWidth="700.0">
                <children>
-                  <TextField fx:id="artworkIdTF1" promptText="Artwork ID" />
+                  <TextField fx:id="artworkIdTF" promptText="Artwork ID" />
                   <Button fx:id="findArtworkByIdButton" mnemonicParsing="false" onAction="#findArtworkById" text="Find artwork by ID" />
                </children>
                <HBox.margin>
