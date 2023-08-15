@@ -64,7 +64,7 @@ public class Artwork {
     int artwork_type_id;
     String department_title;
     String department_id;
-    int artists_id;
+    int artist_id;
     String artist_title;
     List<Integer> alt_artist_ids;
     List<Integer> artist_ids;
