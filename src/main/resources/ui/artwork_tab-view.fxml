@@ -14,27 +14,13 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1200.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefWidth="700.0">
-               <children>
-                  <Button fx:id="artworkSortByArtworkTypeButton" mnemonicParsing="false" onAction="#sortArtworksPageByArtworkType" text="Sort page by artwork type" />
-                  <Button fx:id="artworkSortByTitleButton" mnemonicParsing="false" onAction="#sortArtworksPageByTitle" text="Sort page by title">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="artworkSortByArtistButton" mnemonicParsing="false" onAction="#sortArtworksPageByArtist" text="Sort page by artist" />
-               </children>
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" prefWidth="700.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="589.0">
                <children>
                   <ComboBox fx:id="artworkTypesCB" onAction="#onArtworkTypeChange" prefWidth="150.0" promptText="Artwork types" />
-                  <ToggleButton fx:id="artworkFilterByArtworkTypeTB" mnemonicParsing="false" onAction="#filterArtworkPageByArtworkType" text="Filter page by artwork type" />
+                  <ToggleButton fx:id="filterByArtworkTypeTB" mnemonicParsing="false" onAction="#filterByArtworkType" text="Filter page by artwork type" />
                </children>
                <HBox.margin>
-                  <Insets />
+                  <Insets left="10.0" />
                </HBox.margin>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefWidth="700.0">

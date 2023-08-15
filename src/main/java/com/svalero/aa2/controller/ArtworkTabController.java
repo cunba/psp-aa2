@@ -2,7 +2,6 @@ package com.svalero.aa2.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -47,15 +45,9 @@ public class ArtworkTabController implements Initializable {
     @FXML
     public Pagination artworkPagination;
     @FXML
-    public Button artworkSortByArtworkTypeButton;
-    @FXML
-    public Button artworkSortByTitleButton;
-    @FXML
-    public Button artworkSortByArtistButton;
-    @FXML
     public ComboBox<ArtworkType> artworkTypesCB;
     @FXML
-    public ToggleButton artworkFilterByArtworkTypeTB;
+    public ToggleButton filterByArtworkTypeTB;
     @FXML
     public TextField artworkIdTF;
     @FXML
@@ -131,36 +123,34 @@ public class ArtworkTabController implements Initializable {
     }
 
     @FXML
-    public void sortArtworksPageByArtworkType(ActionEvent event) {
-        // sortArtworksPageByArtworkTypePressed = sortArtworksPageByArtworkTypePressed
-        // == true ? false : true;
-    }
-
-    @FXML
-    public void sortArtworksPageByTitle(ActionEvent event) {
-        // sortArtworksPageByTitlePressed = sortArtworksPageByTitlePressed == true ?
-        // false : true;
-    }
-
-    @FXML
-    public void sortArtworksPageByArtist(ActionEvent event) {
-        // sortArtworksPageByArtistPressed = sortArtworksPageByArtistPressed == true ?
-        // false : true;
-    }
-
-    @FXML
-    public void filterArtworkPageByArtworkType(ActionEvent event) {
-        if (artworkFilterByArtworkTypeTB.isSelected()) {
+    public void filterByArtworkType() {
+        if (filterByArtworkTypeTB.isSelected() && artworkTypesCB.getValue() != null) {
             ResponsePaginated<Artwork> response = responses.get(currentPage);
-            List<Artwork> responseListFiltered = response.getData().stream()
+            List<String> listIds = response.getData().stream()
                     .filter(artwork -> artwork.getArtwork_type_id() == artworkTypesCB.getValue()
                             .getId())
+                    .map(artwork -> String.valueOf(artwork.getId()))
                     .collect(Collectors.toList());
 
-            List<String> ids = new ArrayList<>();
-            responseListFiltered.forEach((artwork) -> ids.add(String.valueOf(artwork.getId())));
+            Predicate<VBox> filter = vbox -> listIds.contains(vbox.getId());
+            artworkListFiltered.setPredicate(filter);
+        } else {
+            artworkListFiltered.setPredicate(null);
+        }
+    }
 
-            Predicate<VBox> filter = vbox -> ids.contains(vbox.getId());
+    @FXML
+    public void onArtworkTypeChange() {
+        if (filterByArtworkTypeTB.isSelected() && artworkTypesCB.getValue() != null) {
+            ResponsePaginated<Artwork> response = responses.get(currentPage);
+            List<String> listIds = response.getData().stream()
+                    .filter(artwork -> artwork.getArtwork_type_id() == artworkTypesCB.getValue()
+                            .getId())
+                    .map(artwork -> String.valueOf(artwork.getId()))
+                    .collect(Collectors.toList());
+
+            Predicate<VBox> filter = vbox -> listIds.contains(vbox.getId());
+            artworkListFiltered.setPredicate(null);
             artworkListFiltered.setPredicate(filter);
         } else {
             artworkListFiltered.setPredicate(null);
@@ -201,26 +191,6 @@ public class ArtworkTabController implements Initializable {
             new Thread(artworkTaskById).start();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void onArtworkTypeChange() {
-        if (artworkFilterByArtworkTypeTB.isSelected()) {
-            ResponsePaginated<Artwork> response = responses.get(currentPage);
-            List<Artwork> responseListFiltered = response.getData().stream()
-                    .filter(artwork -> artwork.getArtwork_type_id() == artworkTypesCB.getValue()
-                            .getId())
-                    .collect(Collectors.toList());
-
-            List<String> ids = new ArrayList<>();
-            responseListFiltered.forEach((artwork) -> ids.add(String.valueOf(artwork.getId())));
-
-            Predicate<VBox> filter = vbox -> ids.contains(vbox.getId());
-            artworkListFiltered.setPredicate(null);
-            artworkListFiltered.setPredicate(filter);
-        } else {
-            artworkListFiltered.setPredicate(null);
         }
     }
 
