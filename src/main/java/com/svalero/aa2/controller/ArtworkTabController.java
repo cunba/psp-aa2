@@ -89,7 +89,6 @@ public class ArtworkTabController implements Initializable {
                 artworkPagination.setPageCount(response.getPagination().getTotal_pages());
                 responses.put(response.getPagination().getCurrent_page(), response);
                 currentPage = response.getPagination().getCurrent_page();
-                artworkPI.progressProperty().setValue(0.25);
                 int artworkNumber = 0;
                 for (Artwork artwork : response.getData()) {
                     try {
@@ -153,7 +152,6 @@ public class ArtworkTabController implements Initializable {
             Platform.runLater(() -> {
                 responses.put(response.getPagination().getCurrent_page(), response);
                 currentPage = response.getPagination().getCurrent_page();
-                artworkPI.progressProperty().setValue(0.25);
                 int artworkNumber = 0;
                 for (Artwork artwork : response.getData()) {
                     try {
@@ -260,8 +258,7 @@ public class ArtworkTabController implements Initializable {
                 Image image = new Image(response.getData().getIiif_url() +
                         "/full/843,/0/default.jpg");
                 artworkController.showArtwork(artwork, image);
-                artworkPI.progressProperty()
-                        .setValue(0.25 + artworkNumber * 0.75 / totalArtworks);
+                artworkPI.progressProperty().setValue(artworkNumber / totalArtworks);
             });
         };
 
@@ -276,8 +273,7 @@ public class ArtworkTabController implements Initializable {
         } else {
             Image image = new Image(R.getImage("noImage.png"));
             artworkController.showArtwork(artwork, image);
-            artworkPI.progressProperty()
-                    .setValue(0.25 + artworkNumber * 0.75 / totalArtworks);
+            artworkPI.progressProperty().setValue(artworkNumber / totalArtworks);
         }
         return artworkPane;
     }

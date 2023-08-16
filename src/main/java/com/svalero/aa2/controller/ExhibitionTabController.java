@@ -90,7 +90,6 @@ public class ExhibitionTabController implements Initializable {
                 exhibitionPagination.setPageCount(response.getPagination().getTotal_pages());
                 responses.put(response.getPagination().getCurrent_page(), response);
                 currentPage = response.getPagination().getCurrent_page();
-                exhibitionPI.progressProperty().setValue(0.25);
                 int exhibitionNumber = 0;
                 for (Exhibition exhibition : response.getData()) {
                     try {
@@ -155,7 +154,6 @@ public class ExhibitionTabController implements Initializable {
             Platform.runLater(() -> {
                 responses.put(response.getPagination().getCurrent_page(), response);
                 currentPage = response.getPagination().getCurrent_page();
-                exhibitionPI.progressProperty().setValue(0.25);
                 int exhibitionNumber = 0;
                 for (Exhibition exhibition : response.getData()) {
                     try {
@@ -228,8 +226,7 @@ public class ExhibitionTabController implements Initializable {
                 Image image = new Image(response.getData().getIiif_url() +
                         "/full/843,/0/default.jpg");
                 exhibitionController.showExhibition(exhibition, image);
-                exhibitionPI.progressProperty()
-                        .setValue(0.25 + exhibitionNumber * 0.75 / totalExhibitions);
+                exhibitionPI.progressProperty().setValue(exhibitionNumber / totalExhibitions);
             });
         };
 
@@ -243,8 +240,7 @@ public class ExhibitionTabController implements Initializable {
         } else {
             Image image = new Image(R.getImage("noImage.png"));
             exhibitionController.showExhibition(exhibition, image);
-            exhibitionPI.progressProperty()
-                    .setValue(0.25 + exhibitionNumber * 0.75 / totalExhibitions);
+            exhibitionPI.progressProperty().setValue(exhibitionNumber / totalExhibitions);
 
         }
         return exhibitionPane;
