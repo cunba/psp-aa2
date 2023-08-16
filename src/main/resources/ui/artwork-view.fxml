@@ -35,11 +35,23 @@
                   <Text fx:id="artistText" strokeType="OUTSIDE" strokeWidth="0.0" />
                </children>
             </VBox>
-            <ScrollPane fx:id="descriptionSP" prefWidth="600.0">
-               <content>
-                  <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" />
-               </content>
-            </ScrollPane>
+            <VBox fx:id="descriptionVBox" prefHeight="495.0" prefWidth="475.0">
+               <children>
+                  <Text fx:id="descriptionLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <ScrollPane fx:id="descriptionSP" prefHeight="490.0" prefWidth="475.0">
+                     <content>
+                        <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" />
+                     </content>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </ScrollPane>
+               </children>
+            </VBox>
          </children>
          <VBox.margin>
             <Insets />

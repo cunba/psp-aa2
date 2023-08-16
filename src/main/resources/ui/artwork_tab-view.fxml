@@ -26,7 +26,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="35.0" prefWidth="400.0">
                <children>
-                  <ProgressIndicator fx:id="progressIndicator" prefHeight="35.0" prefWidth="44.0" progress="0.0" />
+                  <ProgressIndicator fx:id="artworkPI" prefHeight="35.0" prefWidth="44.0" progress="0.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefWidth="400.0">
