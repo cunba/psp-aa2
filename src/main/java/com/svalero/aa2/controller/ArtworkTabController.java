@@ -164,6 +164,7 @@ public class ArtworkTabController implements Initializable {
                         e.printStackTrace();
                     }
                 }
+                progressIndicator.progressProperty().setValue(0.25);
             });
         };
 
