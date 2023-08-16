@@ -1,12 +1,7 @@
 package com.svalero.aa2.controller;
 
 import com.svalero.aa2.model.Artwork;
-import com.svalero.aa2.model.ImageAPI;
-import com.svalero.aa2.model.Response;
-import com.svalero.aa2.task.ImageTask;
 
-import io.reactivex.functions.Consumer;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -27,9 +22,7 @@ public class ArtworkController {
     @FXML
     public ImageView artworkIV;
 
-    private ImageTask imageTask;
-
-    public void showArtwork(Artwork artwork) {
+    public void showArtwork(Artwork artwork, Image image) {
         if (artwork.getPublication_history() != null)
             descriptionText.setText(artwork.getPublication_history());
         else if (artwork.getExhibition_history() != null)
@@ -49,20 +42,7 @@ public class ArtworkController {
         else
             artistText.setText("Artist unkown from " + artwork.getPlace_of_origin());
 
-        Consumer<Response<ImageAPI>> imageConsumer = (response) -> {
-            Platform.runLater(() -> {
-                Image image = new Image(response.getData().getIiif_url() + "/full/843,/0/default.jpg");
-                artworkIV.setImage(image);
-            });
-        };
-
-        Consumer<Throwable> throwable = (error) -> {
-            System.out.println(error.toString());
-        };
-
-        if (artwork.getImage_id() != null) {
-            imageTask = new ImageTask(artwork.getImage_id(), imageConsumer, throwable);
-            new Thread(imageTask).start();
-        }
+        if (artwork.getImage_id() != null)
+            artworkIV.setImage(image);
     }
 }
