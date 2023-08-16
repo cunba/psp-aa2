@@ -260,7 +260,7 @@ public class ArtworkTabController implements Initializable {
                         "/full/843,/0/default.jpg");
                 artworkController.showArtwork(artwork, image);
                 progressIndicator.progressProperty()
-                        .setValue(artworkNumber / totalArtworks);
+                        .setValue(0.25 + artworkNumber * 0.75 / totalArtworks);
             });
         };
 
