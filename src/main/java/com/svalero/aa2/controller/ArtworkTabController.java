@@ -54,7 +54,7 @@ public class ArtworkTabController implements Initializable {
     @FXML
     public ToggleButton filterByArtworkTypeTB;
     @FXML
-    public ProgressIndicator progressIndicator;
+    public ProgressIndicator artworkPI;
     @FXML
     public TextField artworkIdTF;
     @FXML
@@ -76,8 +76,8 @@ public class ArtworkTabController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        progressIndicator.progressProperty().unbind();
-        progressIndicator.progressProperty().setValue(0);
+        artworkPI.progressProperty().unbind();
+        artworkPI.progressProperty().setValue(0);
 
         artworkLV.setItems(artworkListFiltered);
         artworkPagination.currentPageIndexProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -100,7 +100,6 @@ public class ArtworkTabController implements Initializable {
                         e.printStackTrace();
                     }
                 }
-                progressIndicator.progressProperty().setValue(0.25);
             });
         };
 
@@ -146,8 +145,8 @@ public class ArtworkTabController implements Initializable {
 
     private void onPageChange(int newPage) {
         artworkList.clear();
-        progressIndicator.progressProperty().unbind();
-        progressIndicator.progressProperty().setValue(0);
+        artworkPI.progressProperty().unbind();
+        artworkPI.progressProperty().setValue(0);
 
         Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
             Platform.runLater(() -> {
@@ -164,7 +163,6 @@ public class ArtworkTabController implements Initializable {
                         e.printStackTrace();
                     }
                 }
-                progressIndicator.progressProperty().setValue(0.25);
             });
         };
 
@@ -260,8 +258,7 @@ public class ArtworkTabController implements Initializable {
                 Image image = new Image(response.getData().getIiif_url() +
                         "/full/843,/0/default.jpg");
                 artworkController.showArtwork(artwork, image);
-                progressIndicator.progressProperty()
-                        .setValue(0.25 + artworkNumber * 0.75 / totalArtworks);
+                artworkPI.progressProperty().setValue(artworkNumber / totalArtworks);
             });
         };
 
@@ -269,9 +266,14 @@ public class ArtworkTabController implements Initializable {
             System.out.println(error.toString());
         };
 
+        System.out.println(artwork.getImage_id());
         if (artwork.getImage_id() != null) {
             ImageTask imageTask = new ImageTask(artwork.getImage_id(), imageConsumer, throwable);
             new Thread(imageTask).start();
+        } else {
+            Image image = new Image(R.getImage("noImage.png"));
+            artworkController.showArtwork(artwork, image);
+            artworkPI.progressProperty().setValue(artworkNumber / totalArtworks);
         }
         return artworkPane;
     }

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
@@ -17,13 +18,18 @@
             <Insets left="5.0" />
          </VBox.margin>
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="589.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0">
                <children>
                   <ComboBox fx:id="galleriesCB" onAction="#onGalleryChange" prefWidth="150.0" promptText="Galleries" />
                   <ToggleButton fx:id="filterByGalleryTB" mnemonicParsing="false" onAction="#filterByGallery" text="Filter page by gallery" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="700.0">
+            <HBox alignment="CENTER" prefHeight="35.0" prefWidth="395.0">
+               <children>
+                  <ProgressIndicator fx:id="exhibitionPI" progress="0.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="400.0">
                <children>
                   <TextField fx:id="exhibitionIdTF" promptText="Exhibition ID" />
                   <Button fx:id="findExhibitionByIdButton" mnemonicParsing="false" onAction="#findExhibitionById" text="Find exhibition by ID" />
@@ -34,7 +40,7 @@
             </HBox>
          </children>
       </HBox>
-      <ListView fx:id="exhibitionLV" prefHeight="535.0" prefWidth="1200.0" />
+      <ListView fx:id="exhibitionLV" prefHeight="590.0" prefWidth="1200.0" />
       <Pagination fx:id="exhibitionPagination" prefHeight="20.0" prefWidth="600.0" />
    </children>
 </VBox>

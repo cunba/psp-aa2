@@ -7,10 +7,8 @@ import java.util.ResourceBundle;
 import com.svalero.aa2.App;
 import com.svalero.aa2.model.Artist;
 import com.svalero.aa2.model.Exhibition;
-import com.svalero.aa2.model.ImageAPI;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.task.ArtistTaskById;
-import com.svalero.aa2.task.ImageTask;
 
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
@@ -19,29 +17,40 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class ExhibitionController implements Initializable {
     @FXML
-    public Text exhibitionTitleText;
+    public Text titleText;
     @FXML
-    public Text exhibitionGalleryTitleText;
+    public Text galleryTitleText;
     @FXML
-    public Text exhibitionDescriptionText;
+    public Text descriptionText;
     @FXML
-    public Text exhibitionWebText;
+    public Text webText;
     @FXML
-    public Hyperlink exhibitionWebHyperlink;
+    public Hyperlink webHyperlink;
     @FXML
-    public ListView<String> exhibitionArtistsLV;
+    public ListView<String> artistsLV;
     @FXML
-    public ListView<String> exhibitionArtworksLV;
+    public ListView<String> artworksLV;
+    @FXML
+    public ImageView exhibitionIV;
+    @FXML
+    public VBox artistArtworkVBox;
+    @FXML
+    public Label artistsLabel;
+    @FXML
+    public Label artworksLabel;
 
     private ObservableList<String> artistList;
     private ObservableList<String> artworkList;
     private ArtistTaskById artistTask;
-    private ImageTask imageTask;
     private App app;
 
     @Override
@@ -49,18 +58,18 @@ public class ExhibitionController implements Initializable {
         app = new App();
 
         artistList = FXCollections.observableArrayList();
-        exhibitionArtistsLV.setItems(artistList);
+        artistsLV.setItems(artistList);
 
         artworkList = FXCollections.observableArrayList();
-        exhibitionArtworksLV.setItems(artworkList);
+        artworksLV.setItems(artworkList);
     }
 
-    public void showExhibition(Exhibition exhibition) {
-        exhibitionDescriptionText.setText(null);
-        exhibitionGalleryTitleText.setText(null);
-        exhibitionTitleText.setText(null);
-        exhibitionWebText.setText(null);
-        exhibitionWebHyperlink.setText(null);
+    public void showExhibition(Exhibition exhibition, Image image) {
+        descriptionText.setText(null);
+        galleryTitleText.setText(null);
+        titleText.setText(null);
+        webText.setText(null);
+        webHyperlink.setText(null);
 
         Consumer<Response<Artist>> artistConsumer = (response) -> {
             Platform.runLater(() -> {
@@ -68,23 +77,12 @@ public class ExhibitionController implements Initializable {
             });
         };
 
-        Consumer<Response<ImageAPI>> imageConsumer = (response) -> {
-            Platform.runLater(() -> {
-
-            });
-        };
-
-        exhibitionTitleText.setText(exhibition.getTitle());
+        titleText.setText(exhibition.getTitle());
         if (exhibition.getGallery_title() != null) {
-            exhibitionGalleryTitleText.setText("Gallery " + exhibition.getGallery_title());
+            galleryTitleText.setText("Gallery " + exhibition.getGallery_title());
         }
 
-        if (exhibition.getImage_url() == null) {
-            if (exhibition.getImage_id() != null) {
-                imageTask = new ImageTask(exhibition.getImage_id(), imageConsumer, null);
-                new Thread(imageTask).start();
-            }
-        }
+        exhibitionIV.setImage(image);
 
         if (exhibition.getArtist_ids() != null && exhibition.getArtist_ids().size() != 0) {
             List<Integer> artistIds = exhibition.getArtist_ids();
@@ -98,17 +96,30 @@ public class ExhibitionController implements Initializable {
             artworkList.addAll(exhibition.getArtwork_titles());
         }
 
+        if (exhibition.getArtist_ids() == null && exhibition.getArtwork_titles() == null) {
+            exhibitionIV.setFitWidth(1200);
+            artistsLabel.setText(null);
+            artworksLabel.setText(null);
+            artistsLV.setPrefWidth(0);
+            artistsLV.setStyle("-fx-background-color:transparent;");
+            artworksLV.setPrefWidth(0);
+            artworksLV.setStyle("-fx-background-color:transparent;");
+            artistArtworkVBox.setPrefWidth(0);
+        }
+
         if (exhibition.getWeb_url() != null) {
             Platform.runLater(() -> {
-                exhibitionWebText.setText("Source: ");
-                exhibitionWebHyperlink.setText(exhibition.getWeb_url());
+                webText.setText("Source: ");
+                webHyperlink.setText(exhibition.getWeb_url());
             });
 
-            exhibitionWebHyperlink.setOnAction(e -> {
+            webHyperlink.setOnAction(e -> {
                 app.openURL(exhibition.getWeb_url());
             });
         }
-        exhibitionDescriptionText
-                .setText(exhibition.getShort_description().replaceAll("<p>", "").replaceAll("</p>", ""));
+
+        if (exhibition.getShort_description() != null)
+            descriptionText
+                    .setText(exhibition.getShort_description().replaceAll("<p>", "").replaceAll("</p>", ""));
     }
 }

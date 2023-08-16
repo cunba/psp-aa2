@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="exhibitionVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="1175.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="exhibitionVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1175.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text fx:id="exhibitionTitleText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="1197.3333740234375">
+      <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="1197.3333740234375">
          <font>
             <Font size="36.0" />
          </font>
@@ -21,7 +21,7 @@
             <Insets bottom="3.5" top="3.5" />
          </VBox.margin>
       </Text>
-      <Text fx:id="exhibitionGalleryTitleText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="1195.3333740234375">
+      <Text fx:id="galleryTitleText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="1195.3333740234375">
          <font>
             <Font size="24.0" />
          </font>
@@ -29,12 +29,15 @@
             <Insets bottom="10.0" />
          </VBox.margin>
       </Text>
-      <HBox prefHeight="510.0" prefWidth="1200.0">
+      <HBox alignment="TOP_CENTER" prefHeight="510.0" prefWidth="1200.0">
          <children>
-            <ImageView fx:id="exhibitionIV" fitHeight="510.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
-            <VBox prefHeight="510.0" prefWidth="500.0">
+            <ImageView fx:id="exhibitionIV" fitHeight="510.0" fitWidth="790.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin></ImageView>
+            <VBox fx:id="artistArtworkVBox" prefHeight="510.0" prefWidth="500.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="385.0" text="Artists:" textAlignment="CENTER">
+                  <Label fx:id="artistsLabel" prefHeight="17.0" prefWidth="385.0" text="Artists:" textAlignment="CENTER">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -42,12 +45,12 @@
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </Label>
-                  <ListView fx:id="exhibitionArtistsLV" prefHeight="200.0" prefWidth="200.0">
+                  <ListView fx:id="artistsLV" prefHeight="200.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </ListView>
-                  <Label prefHeight="17.0" prefWidth="385.0" text="Artworks:" textAlignment="CENTER">
+                  <Label fx:id="artworksLabel" prefHeight="17.0" prefWidth="385.0" text="Artworks:" textAlignment="CENTER">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -55,23 +58,23 @@
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </Label>
-                  <ListView fx:id="exhibitionArtworksLV" prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="artworksLV" prefHeight="200.0" prefWidth="200.0" />
                </children>
             </VBox>
          </children>
       </HBox>
-      <Text fx:id="exhibitionDescriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1400.0">
+      <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1400.0">
          <VBox.margin>
             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
          </VBox.margin>
       </Text>
-      <HBox alignment="CENTER_LEFT">
+      <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="1200.0">
          <children>
-            <Text fx:id="exhibitionWebText" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <Hyperlink fx:id="exhibitionWebHyperlink" />
+            <Text fx:id="webText" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Hyperlink fx:id="webHyperlink" />
          </children>
          <VBox.margin>
-            <Insets bottom="10.0" left="20.0" right="20.0" />
+            <Insets bottom="5.0" left="20.0" right="20.0" />
          </VBox.margin>
       </HBox>
       <Separator prefWidth="200.0" />

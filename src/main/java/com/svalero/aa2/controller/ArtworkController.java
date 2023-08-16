@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class ArtworkController {
@@ -14,13 +15,17 @@ public class ArtworkController {
     @FXML
     public Text titleText;
     @FXML
-    public ScrollPane descriptionSP;
+    public VBox descriptionVBox;
     @FXML
     public Text descriptionText;
     @FXML
     public Text artistText;
     @FXML
     public ImageView artworkIV;
+    @FXML
+    public Text descriptionLabel;
+    @FXML
+    public ScrollPane descriptionSP;
 
     public void showArtwork(Artwork artwork, Image image) {
         if (artwork.getPublication_history() != null)
@@ -29,8 +34,10 @@ public class ArtworkController {
             descriptionText.setText(artwork.getExhibition_history());
         else {
             artworkIV.setFitWidth(1200);
-            descriptionSP.setStyle("-fx-background-color:transparent;");
+            descriptionLabel.setText(null);
             descriptionSP.setPrefWidth(0);
+            descriptionSP.setStyle("-fx-background-color:transparent;");
+            descriptionVBox.setPrefWidth(0);
         }
 
         artworkTypeText.setText(artwork.getArtwork_type_title());
@@ -42,7 +49,6 @@ public class ArtworkController {
         else
             artistText.setText("Artist unkown from " + artwork.getPlace_of_origin());
 
-        if (artwork.getImage_id() != null)
-            artworkIV.setImage(image);
+        artworkIV.setImage(image);
     }
 }
