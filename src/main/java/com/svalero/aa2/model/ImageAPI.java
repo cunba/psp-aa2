@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Image {
+public class ImageAPI {
     UUID id;
     UUID lake_guid;
     String api_model;

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
@@ -14,7 +15,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1200.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="589.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0">
                <children>
                   <ComboBox fx:id="artworkTypesCB" onAction="#onArtworkTypeChange" prefWidth="150.0" promptText="Artwork types" />
                   <ToggleButton fx:id="filterByArtworkTypeTB" mnemonicParsing="false" onAction="#filterByArtworkType" text="Filter page by artwork type" />
@@ -23,7 +24,12 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefWidth="700.0">
+            <HBox alignment="CENTER" prefHeight="35.0" prefWidth="400.0">
+               <children>
+                  <ProgressIndicator fx:id="progressIndicator" prefHeight="35.0" prefWidth="44.0" progress="0.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefWidth="400.0">
                <children>
                   <TextField fx:id="artworkIdTF" promptText="Artwork ID" />
                   <Button fx:id="findArtworkByIdButton" mnemonicParsing="false" onAction="#findArtworkById" text="Find artwork by ID" />
@@ -34,7 +40,7 @@
             </HBox>
          </children>
       </HBox>
-      <ListView fx:id="artworkLV" prefHeight="550.0" prefWidth="1200.0" />
+      <ListView fx:id="artworkLV" prefHeight="590.0" prefWidth="1200.0" />
       <Pagination fx:id="artworkPagination" prefHeight="20.0" prefWidth="600.0" />
    </children>
 </VBox>
