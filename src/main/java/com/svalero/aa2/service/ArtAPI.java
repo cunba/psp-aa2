@@ -7,7 +7,7 @@ import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.ArtworkType;
 import com.svalero.aa2.model.Exhibition;
 import com.svalero.aa2.model.Gallery;
-import com.svalero.aa2.model.Image;
+import com.svalero.aa2.model.ImageAPI;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.model.ResponsePaginated;
 
@@ -62,7 +62,7 @@ public interface ArtAPI {
     // IMAGE
 
     @GET("/api/v1/images/{id}")
-    Observable<Response<Image>> getImageById(@Path("id") UUID id);
+    Observable<Response<ImageAPI>> getImageById(@Path("id") UUID id);
 
     // GALLERY
 

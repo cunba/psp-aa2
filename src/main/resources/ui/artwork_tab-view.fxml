@@ -34,7 +34,7 @@
             </HBox>
          </children>
       </HBox>
-      <ListView fx:id="artworkLV" prefHeight="550.0" prefWidth="1200.0" />
+      <ListView fx:id="artworkLV" prefHeight="590.0" prefWidth="1200.0" />
       <Pagination fx:id="artworkPagination" prefHeight="20.0" prefWidth="600.0" />
    </children>
 </VBox>

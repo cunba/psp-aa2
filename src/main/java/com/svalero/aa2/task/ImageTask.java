@@ -2,7 +2,7 @@ package com.svalero.aa2.task;
 
 import java.util.UUID;
 
-import com.svalero.aa2.model.Image;
+import com.svalero.aa2.model.ImageAPI;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.service.ArtService;
 
@@ -11,10 +11,10 @@ import javafx.concurrent.Task;
 
 public class ImageTask extends Task<Integer> {
     private UUID requestedId;
-    private Consumer<Response<Image>> consumer;
+    private Consumer<Response<ImageAPI>> consumer;
     private Consumer<Throwable> throwable;
 
-    public ImageTask(UUID requestedId, Consumer<Response<Image>> consumer,
+    public ImageTask(UUID requestedId, Consumer<Response<ImageAPI>> consumer,
             Consumer<Throwable> throwable) {
         this.requestedId = requestedId;
         this.consumer = consumer;

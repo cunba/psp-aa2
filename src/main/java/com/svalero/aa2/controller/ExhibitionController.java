@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 import com.svalero.aa2.App;
 import com.svalero.aa2.model.Artist;
 import com.svalero.aa2.model.Exhibition;
-import com.svalero.aa2.model.Image;
+import com.svalero.aa2.model.ImageAPI;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.task.ArtistTaskById;
 import com.svalero.aa2.task.ImageTask;
@@ -68,12 +68,10 @@ public class ExhibitionController implements Initializable {
             });
         };
 
-        Consumer<Response<Image>> imageConsumer = (response) -> {
-            Image image = response.getData();
+        Consumer<Response<ImageAPI>> imageConsumer = (response) -> {
             Platform.runLater(() -> {
 
             });
-            System.out.println(image.toString());
         };
 
         exhibitionTitleText.setText(exhibition.getTitle());

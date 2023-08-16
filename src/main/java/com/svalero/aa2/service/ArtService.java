@@ -9,7 +9,7 @@ import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.ArtworkType;
 import com.svalero.aa2.model.Exhibition;
 import com.svalero.aa2.model.Gallery;
-import com.svalero.aa2.model.Image;
+import com.svalero.aa2.model.ImageAPI;
 import com.svalero.aa2.model.Response;
 import com.svalero.aa2.model.ResponsePaginated;
 
@@ -87,7 +87,7 @@ public class ArtService {
         return this.api.getAllArtworkTypesPage(page);
     }
 
-    public Observable<Response<Image>> getImageById(UUID id) {
+    public Observable<Response<ImageAPI>> getImageById(UUID id) {
         return this.api.getImageById(id);
     }
 
