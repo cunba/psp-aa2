@@ -11,18 +11,21 @@ import javafx.concurrent.Task;
 
 public class ImageTask extends Task<Integer> {
     private UUID requestedId;
-    private Consumer<Response<ImageAPI>> consumer;
-    private Consumer<Throwable> throwable;
 
-    public ImageTask(UUID requestedId, Consumer<Response<ImageAPI>> consumer,
-            Consumer<Throwable> throwable) {
+    public ImageTask(UUID requestedId) {
         this.requestedId = requestedId;
-        this.consumer = consumer;
-        this.throwable = throwable;
     }
 
     @Override
     protected Integer call() throws Exception {
+        Consumer<Response<ImageAPI>> consumer = (response) -> {
+            updateMessage(response.getData().getIiif_url() + "/full/843,/0/default.jpg");
+        };
+
+        Consumer<Throwable> throwable = (error) -> {
+            System.out.println(error.toString());
+        };
+
         ArtService artService = new ArtService();
         artService.getImageById(requestedId).subscribe(consumer, throwable);
 
