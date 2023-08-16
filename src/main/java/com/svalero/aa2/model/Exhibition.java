@@ -30,7 +30,7 @@ public class Exhibition {
     List<Integer> site_ids;
     UUID image_id;
     List<UUID> alt_image_ids;
-    List<Integer> document_ids;
+    List<UUID> document_ids;
     String source_updated_at;
     String updated_at;
     String timestamp;

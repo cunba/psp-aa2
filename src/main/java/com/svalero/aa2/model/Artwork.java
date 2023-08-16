@@ -58,13 +58,13 @@ public class Artwork {
     String latlon;
     Boolean is_on_view;
     String on_loan_display;
-    String galleru_title;
+    String gallery_title;
     int gallery_id;
     String artwork_type_title;
-    int artowrk_type_id;
+    int artwork_type_id;
     String department_title;
     String department_id;
-    int artists_id;
+    int artist_id;
     String artist_title;
     List<Integer> alt_artist_ids;
     List<Integer> artist_ids;

@@ -7,12 +7,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArtworkType {
+public class Gallery {
     int id;
     String api_model;
     String api_link;
     String title;
-    int aat_id;
+    float latitude;
+    float longitude;
+    int tgn_id;
+    boolean is_closed;
+    String number;
+    String floor;
+    String latlon;
     String source_updated_at;
     String updated_at;
     String timestamp;
