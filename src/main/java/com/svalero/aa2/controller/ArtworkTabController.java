@@ -15,6 +15,7 @@ import com.svalero.aa2.model.Response;
 import com.svalero.aa2.model.ResponsePaginated;
 import com.svalero.aa2.task.ArtworkTask;
 import com.svalero.aa2.task.ArtworkTaskById;
+import com.svalero.aa2.task.ArtworkTaskPage;
 import com.svalero.aa2.task.ArtworkTypeTask;
 import com.svalero.aa2.task.ArtworkTypeTaskPage;
 import com.svalero.aa2.util.R;
@@ -70,15 +71,25 @@ public class ArtworkTabController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         artworkLV.setItems(artworkListFiltered);
+        artworkPagination.currentPageIndexProperty().addListener((observableValue, oldValue, newValue) -> {
+            onPageChange((int) newValue);
+        });
 
         Consumer<ResponsePaginated<Artwork>> consumerArtwork = (response) -> {
-            responses.put(response.getPagination().getCurrent_page(), response);
-            currentPage = response.getPagination().getCurrent_page();
-            for (Artwork artwork : response.getData()) {
-                VBox vbox = showArtwork(artwork);
-                vbox.setId(String.valueOf(artwork.getId()));
-                artworkList.add(vbox);
-            }
+            Platform.runLater(() -> {
+                artworkPagination.setPageCount(response.getPagination().getTotal_pages());
+                responses.put(response.getPagination().getCurrent_page(), response);
+                currentPage = response.getPagination().getCurrent_page();
+                for (Artwork artwork : response.getData()) {
+                    try {
+                        VBox vbox = showArtwork(artwork);
+                        vbox.setId(String.valueOf(artwork.getId()));
+                        artworkList.add(vbox);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         };
 
         Consumer<Throwable> throwable = (error) -> {
@@ -120,6 +131,33 @@ public class ArtworkTabController implements Initializable {
 
         ArtworkTypeTaskPage artworkTypeTaskPage = new ArtworkTypeTaskPage(page, consumerArtworkType, throwable);
         new Thread(artworkTypeTaskPage).start();
+    }
+
+    private void onPageChange(int newPage) {
+        artworkList.clear();
+
+        Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
+            Platform.runLater(() -> {
+                responses.put(response.getPagination().getCurrent_page(), response);
+                currentPage = response.getPagination().getCurrent_page();
+                for (Artwork artwork : response.getData()) {
+                    try {
+                        VBox vbox = showArtwork(artwork);
+                        vbox.setId(String.valueOf(artwork.getId()));
+                        artworkList.add(vbox);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        };
+
+        Consumer<Throwable> throwable = (error) -> {
+            System.out.println(error.toString());
+        };
+
+        ArtworkTaskPage artworkTaskPage = new ArtworkTaskPage(newPage + 1, consumer, throwable);
+        new Thread(artworkTaskPage).start();
     }
 
     @FXML

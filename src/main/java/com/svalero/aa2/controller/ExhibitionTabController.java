@@ -15,6 +15,7 @@ import com.svalero.aa2.model.Response;
 import com.svalero.aa2.model.ResponsePaginated;
 import com.svalero.aa2.task.ExhibitionTask;
 import com.svalero.aa2.task.ExhibitionTaskById;
+import com.svalero.aa2.task.ExhibitionTaskPage;
 import com.svalero.aa2.task.GalleryTask;
 import com.svalero.aa2.task.GalleryTaskPage;
 import com.svalero.aa2.util.R;
@@ -71,6 +72,9 @@ public class ExhibitionTabController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exhibitionLV.setItems(exhibitionFilteredList);
+        exhibitionPagination.currentPageIndexProperty().addListener((observableValue, oldValue, newValue) -> {
+            onPageChange((int) newValue);
+        });
 
         Consumer<ResponsePaginated<Exhibition>> consumer = (response) -> {
             responses.put(response.getPagination().getCurrent_page(), response);
@@ -121,6 +125,33 @@ public class ExhibitionTabController implements Initializable {
 
         GalleryTaskPage galleryTaskPage = new GalleryTaskPage(page, consumerGallery, throwable);
         new Thread(galleryTaskPage).start();
+    }
+
+    private void onPageChange(int newPage) {
+        exhibitionList.clear();
+
+        Consumer<ResponsePaginated<Exhibition>> consumer = (response) -> {
+            Platform.runLater(() -> {
+                responses.put(response.getPagination().getCurrent_page(), response);
+                currentPage = response.getPagination().getCurrent_page();
+                for (Exhibition exhibition : response.getData()) {
+                    try {
+                        VBox vbox = showExhibition(exhibition);
+                        vbox.setId(String.valueOf(exhibition.getId()));
+                        exhibitionList.add(vbox);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        };
+
+        Consumer<Throwable> throwable = (error) -> {
+            System.out.println(error.toString());
+        };
+
+        ExhibitionTaskPage exhibitionTaskPage = new ExhibitionTaskPage(newPage + 1, consumer, throwable);
+        new Thread(exhibitionTaskPage).start();
     }
 
     @FXML
