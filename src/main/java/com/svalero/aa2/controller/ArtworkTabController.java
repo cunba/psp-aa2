@@ -63,7 +63,6 @@ public class ArtworkTabController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         artworkPI.progressProperty().unbind();
-        artworkPI.progressProperty().setValue(0);
 
         artworkLV.setItems(artworkListFiltered);
         artworkPagination.currentPageIndexProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -79,25 +78,27 @@ public class ArtworkTabController implements Initializable {
         new Thread(artworkTask).start();
 
         artworkTask.messageProperty()
-                .addListener((observableValue, oldValue, newValue) -> currentPage = Integer.parseInt(newValue));
+                .addListener((observableValue, oldValue, newValue) -> {
+                    String[] value = newValue.split(";");
+                    currentPage = Integer.parseInt(value[0]);
+                    artworkPagination.setPageCount(Integer.parseInt(value[1]));
+                });
 
-        artworkTask.progressProperty()
-                .addListener((obervableValue, oldValue, newValue) -> artworkPI.progressProperty().setValue(newValue));
+        artworkPI.progressProperty().bind(artworkTask.progressProperty());
     }
 
     private void onPageChange(int newPage) {
         artworkList.clear();
         artworkPI.progressProperty().unbind();
-        artworkPI.progressProperty().setValue(0);
 
         ArtworkTask artworkTask = new ArtworkTask(artworkList, responses, newPage + 1);
         new Thread(artworkTask).start();
 
         artworkTask.messageProperty()
-                .addListener((observableValue, oldValue, newValue) -> currentPage = Integer.parseInt(newValue));
+                .addListener((observableValue, oldValue,
+                        newValue) -> currentPage = Integer.parseInt(newValue.split(";")[0]));
 
-        artworkTask.progressProperty()
-                .addListener((obervableValue, oldValue, newValue) -> artworkPI.progressProperty().setValue(newValue));
+        artworkPI.progressProperty().bind(artworkTask.progressProperty());
     }
 
     @FXML

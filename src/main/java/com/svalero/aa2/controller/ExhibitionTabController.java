@@ -80,11 +80,13 @@ public class ExhibitionTabController implements Initializable {
         new Thread(exhibitionTask).start();
 
         exhibitionTask.messageProperty()
-                .addListener((observableValue, oldValue, newValue) -> currentPage = Integer.parseInt(newValue));
+                .addListener((observableValue, oldValue, newValue) -> {
+                    String[] value = newValue.split(";");
+                    currentPage = Integer.parseInt(value[0]);
+                    exhibitionPagination.setPageCount(Integer.parseInt(value[1]));
+                });
 
-        exhibitionTask.progressProperty()
-                .addListener(
-                        (obervableValue, oldValue, newValue) -> exhibitionPI.progressProperty().setValue(newValue));
+        exhibitionPI.progressProperty().bind(exhibitionTask.progressProperty());
     }
 
     private void onPageChange(int newPage) {
@@ -96,11 +98,10 @@ public class ExhibitionTabController implements Initializable {
         new Thread(exhibitionTask).start();
 
         exhibitionTask.messageProperty()
-                .addListener((observableValue, oldValue, newValue) -> currentPage = Integer.parseInt(newValue));
+                .addListener((observableValue, oldValue,
+                        newValue) -> currentPage = Integer.parseInt(newValue.split(";")[0]));
 
-        exhibitionTask.progressProperty()
-                .addListener(
-                        (obervableValue, oldValue, newValue) -> exhibitionPI.progressProperty().setValue(newValue));
+        exhibitionPI.progressProperty().bind(exhibitionTask.progressProperty());
     }
 
     @FXML

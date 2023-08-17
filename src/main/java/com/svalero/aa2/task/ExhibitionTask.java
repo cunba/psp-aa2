@@ -9,6 +9,7 @@ import com.svalero.aa2.service.ArtService;
 import com.svalero.aa2.util.R;
 
 import io.reactivex.functions.Consumer;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
@@ -20,6 +21,8 @@ public class ExhibitionTask extends Task<Integer> {
     private ObservableList<VBox> exhibitions;
     private ObservableMap<Integer, ResponsePaginated<Exhibition>> responses;
     private int page;
+    private int totalExhibitions;
+    private int exhibitionNumber;
 
     public ExhibitionTask(ObservableList<VBox> exhibitions,
             ObservableMap<Integer, ResponsePaginated<Exhibition>> responses,
@@ -28,17 +31,19 @@ public class ExhibitionTask extends Task<Integer> {
         this.exhibitions = exhibitions;
         this.responses = responses;
         this.page = page;
+        totalExhibitions = 0;
+        exhibitionNumber = 0;
     }
 
     @Override
     protected Integer call() throws Exception {
         Consumer<ResponsePaginated<Exhibition>> consumer = (response) -> {
+            totalExhibitions = response.getPagination().getLimit();
             responses.put(response.getPagination().getCurrent_page(), response);
-            updateMessage(String.valueOf(response.getPagination().getCurrent_page()));
-            int exhibitionNumber = 0;
+            updateMessage(String.valueOf(response.getPagination().getCurrent_page()) + ";"
+                    + response.getPagination().getTotal_pages());
             for (Exhibition exhibition : response.getData()) {
-                exhibitionNumber++;
-                createVBox(exhibition, exhibitionNumber, response.getPagination().getLimit());
+                createVBox(exhibition);
             }
         };
 
@@ -55,8 +60,7 @@ public class ExhibitionTask extends Task<Integer> {
         return null;
     }
 
-    private void createVBox(Exhibition exhibition, int exhibitionNumber, int totalExhibitions) {
-
+    private void createVBox(Exhibition exhibition) {
         FXMLLoader loader = new FXMLLoader();
         ExhibitionController exhibitionController = new ExhibitionController();
         loader.setLocation(R.getUI("exhibition-view.fxml"));
@@ -72,12 +76,12 @@ public class ExhibitionTask extends Task<Integer> {
                     VBox vbox = loader.load();
                     exhibitionController.showExhibition(exhibition, image);
                     vbox.setId(String.valueOf(exhibition.getId()));
-                    exhibitions.add(vbox);
+                    exhibitionNumber++;
+                    Platform.runLater(() -> exhibitions.add(vbox));
                     updateProgress(exhibitionNumber / totalExhibitions, 1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             });
         } else {
             try {
@@ -85,7 +89,8 @@ public class ExhibitionTask extends Task<Integer> {
                 VBox vbox = loader.load();
                 exhibitionController.showExhibition(exhibition, image);
                 vbox.setId(String.valueOf(exhibition.getId()));
-                exhibitions.add(vbox);
+                exhibitionNumber++;
+                Platform.runLater(() -> exhibitions.add(vbox));
                 updateProgress(exhibitionNumber / totalExhibitions, 1);
             } catch (IOException e) {
                 e.printStackTrace();

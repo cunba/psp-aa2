@@ -21,24 +21,29 @@ public class ArtworkTask extends Task<Integer> {
     ObservableList<VBox> artworks;
     ObservableMap<Integer, ResponsePaginated<Artwork>> responses;
     int page;
+    int artworkNumber;
+    boolean isFinish;
+    int totalArtworks;
 
     public ArtworkTask(ObservableList<VBox> artworks, ObservableMap<Integer, ResponsePaginated<Artwork>> responses,
             int page) {
         this.artworks = artworks;
         this.responses = responses;
         this.page = page;
+        artworkNumber = 0;
+        totalArtworks = 0;
+        isFinish = false;
     }
 
     @Override
     protected Integer call() throws Exception {
-
         Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
+            totalArtworks = response.getPagination().getLimit();
             responses.put(response.getPagination().getCurrent_page(), response);
-            updateMessage(String.valueOf(response.getPagination().getCurrent_page()));
-            int artworkNumber = 0;
+            updateMessage(String.valueOf(response.getPagination().getCurrent_page()) + ";"
+                    + response.getPagination().getTotal_pages());
             for (Artwork artwork : response.getData()) {
-                artworkNumber++;
-                createVBox(artwork, artworkNumber, response.getPagination().getLimit());
+                createVBox(artwork);
             }
         };
 
@@ -55,7 +60,7 @@ public class ArtworkTask extends Task<Integer> {
         return null;
     }
 
-    private void createVBox(Artwork artwork, int artworkNumber, int totalArtworks) throws IOException {
+    private void createVBox(Artwork artwork) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         ArtworkController artworkController = new ArtworkController();
         loader.setLocation(R.getUI("artwork-view.fxml"));
@@ -71,20 +76,21 @@ public class ArtworkTask extends Task<Integer> {
                     VBox vbox = loader.load();
                     artworkController.showArtwork(artwork, image);
                     vbox.setId(String.valueOf(artwork.getId()));
+                    artworkNumber++;
                     Platform.runLater(() -> artworks.add(vbox));
-                    updateProgress(artworkNumber / totalArtworks, 1);
+                    updateProgress((artworkNumber / totalArtworks) * 100, 100);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             });
         } else {
             Image image = new Image(R.getImage("noImage.png"));
             VBox vbox = loader.load();
             artworkController.showArtwork(artwork, image);
             vbox.setId(String.valueOf(artwork.getId()));
+            artworkNumber++;
             Platform.runLater(() -> artworks.add(vbox));
-            updateProgress(artworkNumber / totalArtworks, 1);
+            updateProgress((artworkNumber / totalArtworks) * 100, 100);
         }
     }
 }
