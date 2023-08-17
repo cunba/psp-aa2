@@ -1,17 +1,23 @@
 package com.svalero.aa2.controller;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.opencsv.CSVWriter;
 import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.ArtworkType;
 import com.svalero.aa2.model.ResponsePaginated;
 import com.svalero.aa2.task.ArtworkTask;
 import com.svalero.aa2.task.ArtworkTaskById;
 import com.svalero.aa2.task.ArtworkTypeTask;
+import com.svalero.aa2.util.Util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +25,8 @@ import javafx.collections.ObservableMap;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -40,6 +48,8 @@ public class ArtworkTabController implements Initializable {
     public ToggleButton filterByArtworkTypeTB;
     @FXML
     public ProgressIndicator artworkPI;
+    @FXML
+    public Button exportToCSVButton;
     @FXML
     public TextField artworkIdTF;
     @FXML
@@ -133,6 +143,34 @@ public class ArtworkTabController implements Initializable {
             artworkListFiltered.setPredicate(filter);
         } else {
             artworkListFiltered.setPredicate(null);
+        }
+    }
+
+    @FXML
+    public void onExportToCSVButtonClick() {
+        String fileName = "artwork_page_" + currentPage + ".csv";
+        File outputFile = new File(
+                System.getProperty("user.dir") + System.getProperty("file.separator") + fileName);
+
+        try {
+            FileWriter writer = new FileWriter(outputFile);
+            CSVWriter csvWriter = new CSVWriter(writer, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+
+            List<String[]> dataToCSV = new ArrayList<>();
+            ResponsePaginated<Artwork> artworks = responses.get(currentPage);
+            Util util = new Util();
+            dataToCSV.add(util.exportArtworkToCSVHeaders());
+            for (Artwork artwork : artworks.getData()) {
+                dataToCSV.add(artwork.exportToCSV());
+            }
+
+            csvWriter.writeAll(dataToCSV);
+            csvWriter.close();
+            Alert alert = new Alert(AlertType.INFORMATION, "Page exported to CSV" + fileName);
+            alert.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
