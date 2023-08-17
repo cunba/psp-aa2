@@ -67,9 +67,9 @@ public class ArtworkTask extends Task<Integer> {
 
             imageTask.messageProperty().addListener((observableValue, oldValue, newValue) -> {
                 try {
-                    Image image = new Image(R.getImage("noImage.png"));
-                    artworkController.showArtwork(artwork, image);
+                    Image image = new Image(newValue);
                     VBox vbox = loader.load();
+                    artworkController.showArtwork(artwork, image);
                     vbox.setId(String.valueOf(artwork.getId()));
                     Platform.runLater(() -> artworks.add(vbox));
                     updateProgress(artworkNumber / totalArtworks, 1);
@@ -80,8 +80,8 @@ public class ArtworkTask extends Task<Integer> {
             });
         } else {
             Image image = new Image(R.getImage("noImage.png"));
-            artworkController.showArtwork(artwork, image);
             VBox vbox = loader.load();
+            artworkController.showArtwork(artwork, image);
             vbox.setId(String.valueOf(artwork.getId()));
             Platform.runLater(() -> artworks.add(vbox));
             updateProgress(artworkNumber / totalArtworks, 1);

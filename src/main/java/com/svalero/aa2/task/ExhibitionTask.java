@@ -68,9 +68,9 @@ public class ExhibitionTask extends Task<Integer> {
 
             imageTask.messageProperty().addListener((observableValue, oldValue, newValue) -> {
                 try {
-                    Image image = new Image(R.getImage("noImage.png"));
-                    exhibitionController.showExhibition(exhibition, image);
+                    Image image = new Image(newValue);
                     VBox vbox = loader.load();
+                    exhibitionController.showExhibition(exhibition, image);
                     vbox.setId(String.valueOf(exhibition.getId()));
                     exhibitions.add(vbox);
                     updateProgress(exhibitionNumber / totalExhibitions, 1);
@@ -80,11 +80,10 @@ public class ExhibitionTask extends Task<Integer> {
 
             });
         } else {
-            Image image = new Image(R.getImage("noImage.png"));
-            exhibitionController.showExhibition(exhibition, image);
-            VBox vbox;
             try {
-                vbox = loader.load();
+                Image image = new Image(R.getImage("noImage.png"));
+                VBox vbox = loader.load();
+                exhibitionController.showExhibition(exhibition, image);
                 vbox.setId(String.valueOf(exhibition.getId()));
                 exhibitions.add(vbox);
                 updateProgress(exhibitionNumber / totalExhibitions, 1);
