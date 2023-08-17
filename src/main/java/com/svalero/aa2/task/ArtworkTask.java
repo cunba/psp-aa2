@@ -9,6 +9,7 @@ import com.svalero.aa2.service.ArtService;
 import com.svalero.aa2.util.R;
 
 import io.reactivex.functions.Consumer;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
@@ -30,12 +31,13 @@ public class ArtworkTask extends Task<Integer> {
 
     @Override
     protected Integer call() throws Exception {
-        int artworkNumber = 0;
 
         Consumer<ResponsePaginated<Artwork>> consumer = (response) -> {
             responses.put(response.getPagination().getCurrent_page(), response);
             updateMessage(String.valueOf(response.getPagination().getCurrent_page()));
+            int artworkNumber = 0;
             for (Artwork artwork : response.getData()) {
+                artworkNumber++;
                 createVBox(artwork, artworkNumber, response.getPagination().getLimit());
             }
         };
@@ -69,10 +71,9 @@ public class ArtworkTask extends Task<Integer> {
                     artworkController.showArtwork(artwork, image);
                     VBox vbox = loader.load();
                     vbox.setId(String.valueOf(artwork.getId()));
-                    artworks.add(vbox);
+                    Platform.runLater(() -> artworks.add(vbox));
                     updateProgress(artworkNumber / totalArtworks, 1);
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
@@ -82,7 +83,7 @@ public class ArtworkTask extends Task<Integer> {
             artworkController.showArtwork(artwork, image);
             VBox vbox = loader.load();
             vbox.setId(String.valueOf(artwork.getId()));
-            artworks.add(vbox);
+            Platform.runLater(() -> artworks.add(vbox));
             updateProgress(artworkNumber / totalArtworks, 1);
         }
     }

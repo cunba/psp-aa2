@@ -51,7 +51,6 @@ public class ArtworkTaskById extends Task<Integer> {
     }
 
     private void createVBox(Artwork artwork, int artworkNumber, int totalArtworks) throws IOException {
-
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(primaryStage);
@@ -77,7 +76,6 @@ public class ArtworkTaskById extends Task<Integer> {
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 

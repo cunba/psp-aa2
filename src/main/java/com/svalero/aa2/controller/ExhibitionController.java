@@ -72,9 +72,7 @@ public class ExhibitionController implements Initializable {
         webHyperlink.setText(null);
 
         Consumer<Response<Artist>> artistConsumer = (response) -> {
-            Platform.runLater(() -> {
-                artistList.add(response.getData().getTitle());
-            });
+            Platform.runLater(() -> artistList.add(response.getData().getTitle()));
         };
 
         titleText.setText(exhibition.getTitle());

@@ -70,6 +70,8 @@ public class ArtworkTabController implements Initializable {
             onPageChange((int) newValue);
         });
 
+        artworkTypesCB.setItems(artworkTypesList);
+
         ArtworkTypeTask artworkTypeTask = new ArtworkTypeTask(artworkTypesList, 1);
         new Thread(artworkTypeTask).start();
 
@@ -93,6 +95,9 @@ public class ArtworkTabController implements Initializable {
 
         artworkTask.messageProperty()
                 .addListener((observableValue, oldValue, newValue) -> currentPage = Integer.parseInt(newValue));
+
+        artworkTask.progressProperty()
+                .addListener((obervableValue, oldValue, newValue) -> artworkPI.progressProperty().setValue(newValue));
     }
 
     @FXML
