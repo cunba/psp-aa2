@@ -77,7 +77,11 @@ public class ExhibitionTaskById extends Task<VBox> {
 
             });
         } else {
-            Image image = new Image(R.getImage("noImage.png"));
+            Image image;
+            if (exhibition.getImage_url() != null)
+                image = new Image(exhibition.getImage_url());
+            else
+                image = new Image(R.getImage("noImage.png"));
 
             VBox vbox = loader.load();
             exhibitionController.showExhibition(exhibition, image);
