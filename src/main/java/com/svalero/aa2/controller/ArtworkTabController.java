@@ -1,17 +1,23 @@
 package com.svalero.aa2.controller;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.opencsv.CSVWriter;
 import com.svalero.aa2.model.Artwork;
 import com.svalero.aa2.model.ArtworkType;
 import com.svalero.aa2.model.ResponsePaginated;
 import com.svalero.aa2.task.ArtworkTask;
 import com.svalero.aa2.task.ArtworkTaskById;
 import com.svalero.aa2.task.ArtworkTypeTask;
+import com.svalero.aa2.util.Util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +25,9 @@ import javafx.collections.ObservableMap;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -27,6 +36,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ArtworkTabController implements Initializable {
@@ -40,6 +50,8 @@ public class ArtworkTabController implements Initializable {
     public ToggleButton filterByArtworkTypeTB;
     @FXML
     public ProgressIndicator artworkPI;
+    @FXML
+    public Button exportToCSVButton;
     @FXML
     public TextField artworkIdTF;
     @FXML
@@ -94,9 +106,8 @@ public class ArtworkTabController implements Initializable {
         ArtworkTask artworkTask = new ArtworkTask(artworkList, responses, newPage + 1);
         new Thread(artworkTask).start();
 
-        artworkTask.messageProperty()
-                .addListener((observableValue, oldValue,
-                        newValue) -> currentPage = Integer.parseInt(newValue.split(";")[0]));
+        artworkTask.messageProperty().addListener(
+                (observableValue, oldValue, newValue) -> currentPage = Integer.parseInt(newValue.split(";")[0]));
 
         artworkPI.progressProperty().bind(artworkTask.progressProperty());
     }
@@ -137,11 +148,56 @@ public class ArtworkTabController implements Initializable {
     }
 
     @FXML
+    public void onExportToCSVButtonClick() {
+        if (artworkPI.getProgress() != 1.0) {
+            Alert alert = new Alert(AlertType.INFORMATION, "The data is not compleatly loaded, try again.");
+            alert.show();
+        } else {
+            String fileName = "artwork_page_" + currentPage + ".csv";
+            File outputFile = new File(
+                    System.getProperty("user.dir") + System.getProperty("file.separator") + fileName);
+
+            try {
+                FileWriter writer = new FileWriter(outputFile);
+                CSVWriter csvWriter = new CSVWriter(writer, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+
+                List<String[]> dataToCSV = new ArrayList<>();
+                ResponsePaginated<Artwork> artworks = responses.get(currentPage);
+                Util util = new Util();
+                dataToCSV.add(util.exportArtworkToCSVHeaders());
+                for (Artwork artwork : artworks.getData()) {
+                    dataToCSV.add(artwork.exportToCSV());
+                }
+
+                csvWriter.writeAll(dataToCSV);
+                csvWriter.close();
+                Alert alert = new Alert(AlertType.INFORMATION, "Page exported to CSV " + fileName);
+                alert.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
     public void findArtworkById() {
         try {
             int id = Integer.parseInt(artworkIdTF.getText());
-            ArtworkTaskById artworkTaskById = new ArtworkTaskById(id, primaryStage);
+            ArtworkTaskById artworkTaskById = new ArtworkTaskById(id);
             new Thread(artworkTaskById).start();
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(primaryStage);
+
+            artworkTaskById.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+                if (newValue != null) {
+                    Scene scene = new Scene(newValue);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -85,7 +85,12 @@ public class ExhibitionTask extends Task<Integer> {
             });
         } else {
             try {
-                Image image = new Image(R.getImage("noImage.png"));
+                Image image;
+                if (exhibition.getImage_url() != null)
+                    image = new Image(exhibition.getImage_url());
+                else
+                    image = new Image(R.getImage("noImage.png"));
+
                 VBox vbox = loader.load();
                 exhibitionController.showExhibition(exhibition, image);
                 vbox.setId(String.valueOf(exhibition.getId()));

@@ -12,28 +12,23 @@ import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-public class ExhibitionTaskById extends Task<Integer> {
+public class ExhibitionTaskById extends Task<VBox> {
     private int requestedId;
-    private Stage primaryStage;
 
-    public ExhibitionTaskById(int requestedId, Stage primaryStage) {
+    public ExhibitionTaskById(int requestedId) {
         this.requestedId = requestedId;
-        this.primaryStage = primaryStage;
     }
 
     @Override
-    protected Integer call() throws Exception {
+    protected VBox call() throws Exception {
         Consumer<Response<Exhibition>> consumer = (response) -> {
             Platform.runLater(() -> {
                 try {
-                    createExhibition(response.getData(), 1, 1);
+                    createExhibition(response.getData());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -55,12 +50,8 @@ public class ExhibitionTaskById extends Task<Integer> {
         return null;
     }
 
-    private void createExhibition(Exhibition exhibition, int exhibitionNumber, int totalExhibitions)
+    private void createExhibition(Exhibition exhibition)
             throws IOException {
-
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(primaryStage);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(R.getUI("exhibition-view.fxml"));
@@ -74,29 +65,29 @@ public class ExhibitionTaskById extends Task<Integer> {
             imageTask.messageProperty().addListener((observableValue, oldValue, newValue) -> {
                 try {
                     Image image = new Image(newValue);
-                    exhibitionController.showExhibition(exhibition, image);
 
                     VBox vbox = loader.load();
+                    exhibitionController.showExhibition(exhibition, image);
                     vbox.setId(String.valueOf(exhibition.getId()));
 
-                    Scene scene = new Scene(vbox);
-                    stage.setScene(scene);
-                    Platform.runLater(() -> stage.show());
+                    updateValue(vbox);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
             });
         } else {
-            Image image = new Image(R.getImage("noImage.png"));
-            exhibitionController.showExhibition(exhibition, image);
+            Image image;
+            if (exhibition.getImage_url() != null)
+                image = new Image(exhibition.getImage_url());
+            else
+                image = new Image(R.getImage("noImage.png"));
 
             VBox vbox = loader.load();
+            exhibitionController.showExhibition(exhibition, image);
             vbox.setId(String.valueOf(exhibition.getId()));
 
-            Scene scene = new Scene(vbox);
-            stage.setScene(scene);
-            Platform.runLater(() -> stage.show());
+            updateValue(vbox);
         }
     }
 }

@@ -34,4 +34,32 @@ public class Exhibition {
     String source_updated_at;
     String updated_at;
     String timestamp;
+
+    public String[] exportToCSV() {
+        return new String[] {
+                String.valueOf(id),
+                api_model,
+                api_link,
+                title,
+                String.valueOf(is_featured),
+                short_description,
+                web_url,
+                image_url,
+                status,
+                aic_start_at,
+                aid_end_at,
+                String.valueOf(gallery_id),
+                gallery_title,
+                artwork_ids != null ? artwork_ids.toString() : null,
+                artwork_titles != null ? artwork_titles.toString() : null,
+                artist_ids != null ? artist_ids.toString() : null,
+                site_ids != null ? site_ids.toString() : null,
+                String.valueOf(image_id),
+                alt_image_ids != null ? alt_image_ids.toString() : null,
+                document_ids != null ? document_ids.toString() : null,
+                source_updated_at,
+                updated_at,
+                timestamp
+        };
+    }
 }

@@ -27,6 +27,11 @@
             <HBox alignment="CENTER" prefHeight="35.0" prefWidth="400.0">
                <children>
                   <ProgressIndicator fx:id="artworkPI" prefHeight="35.0" prefWidth="44.0" progress="0.0" />
+                  <Button fx:id="exportToCSVButton" mnemonicParsing="false" onAction="#onExportToCSVButtonClick" text="Export page to CSV">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefWidth="400.0">
